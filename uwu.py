@@ -46,9 +46,9 @@ class Uwuifier:
     def uwuify_sentence(self, sentence: str):
         random.seed(sentence)
         words = sentence.split(self.SEPERATOR)
-        return self.SEPERATOR.join(self.uwuify_word(w, sentence) for w in words)
+        return self.SEPERATOR.join(self.uwuify_word(w) for w in words)
 
-    def uwuify_word(self, word: str, sentence: str):
+    def uwuify_word(self, word: str):
         # uwuify the word
         if (not self.is_uri(word)):
             for (regex, replacement) in self.uwu_map:
