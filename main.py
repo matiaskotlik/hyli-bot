@@ -1,6 +1,9 @@
+from io import BytesIO
+from pathlib import Path
 from discord.errors import HTTPException
 from discord.ext.commands.core import guild_only
 from uwu import Uwuifier
+from petpet import Petpet
 
 import discord
 from discord.ext import commands
@@ -11,6 +14,7 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or(config.PREFIX),
                    help_command=None)
 
 uwuifier = Uwuifier()
+petpet = Petpet()
 
 
 def is_uwu_channel(message: discord.Message):
@@ -49,10 +53,30 @@ async def uwuify(ctx: commands.Context):
 
 
 async def uwuify_message(message: discord.Message):
-    if message and message.content:
+    if not message:
+        return
+
+    uwu_content = ''
+    if message.content:
         uwu_content = uwuifier.uwuify_sentence(message.content)
+
+    uwu_files = []
+    # filter images
+    for attachment in [a for a in message.attachments if a.width and a.height]:
+        image_out = BytesIO()
+        petpet.petify(attachment.proxy_url, image_out)
+        image_out.seek(0)
+
+        # change extension to .gif
+        new_filename = str(Path(attachment.filename).with_suffix('.gif'))
+        discord_file = discord.File(fp=image_out,
+                                    filename=new_filename,
+                                    spoiler=attachment.is_spoiler())
+        uwu_files.append(discord_file)
+
+    if uwu_content or uwu_files:
         try:
-            await message.channel.send(uwu_content)
+            await message.channel.send(content=uwu_content, files=uwu_files)
         except HTTPException:
             await message.channel.send(
                 config.SEND_ERROR.format(author=message.author.mention))
