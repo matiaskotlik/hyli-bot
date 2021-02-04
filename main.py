@@ -29,22 +29,19 @@ async def on_message(message: discord.Message):
 
 @bot.command()
 async def uwuify(ctx: commands.Context):
-    last_message = await ctx.channel.history(limit=1, before=ctx.message).flatten()
+    last_message = await ctx.channel.history(limit=1,
+                                             before=ctx.message).flatten()
     try:
         last_message = last_message[0]
     except IndexError:
-        # no message to uwuify
-        ctx.send(config.NO_MESSAGE.format(ctx.author.mention))
-        return
-    print(last_message.author, last_message.content)
-    
+        last_message = None
+
     await uwuify_message(last_message)
 
 
 async def uwuify_message(message: discord.Message):
-    content = message.content
-    if content:
-        uwu_content = uwuifier.uwuify_sentence(content)
+    if message and message.content:
+        uwu_content = uwuifier.uwuify_sentence(message.content)
         await message.channel.send(uwu_content)
 
 

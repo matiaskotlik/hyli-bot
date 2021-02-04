@@ -19,5 +19,4 @@ REACTION_NO = '❌'
 # messages
 INVALID_COMMAND = f'{{author}}: Please enter a valid command. Type {PREFIX}help for help.'
 NO_PERMISSIONS = '{author}: The bot doesn\'t have permissions to do that.'
-NO_MESSAGE = '{author}: There\'s not a message to uwuify.'
 MESSAGE_TIMER = 15
