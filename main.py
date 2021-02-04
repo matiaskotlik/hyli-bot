@@ -1,3 +1,5 @@
+from discord.errors import HTTPException
+from discord.ext.commands.core import guild_only
 from uwu import Uwuifier
 
 import discord
@@ -11,15 +13,19 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or(config.PREFIX),
 uwuifier = Uwuifier()
 
 
+def is_uwu_channel(message: discord.Message):
+    # this will filter guilds for us too
+    return message and message.channel \
+            and isinstance(message.channel, discord.TextChannel) \
+            and config.UWU_PATTERN.match(message.channel.name)
+
+
 @bot.event
 async def on_message(message: discord.Message):
     if message.author.bot:
         return
 
-    channel = message.channel
-    if channel \
-            and isinstance(channel, discord.TextChannel) \
-            and config.UWU_PATTERN.match(channel.name):
+    if is_uwu_channel(message):
         await uwuify_message(message)
         return
 
@@ -28,6 +34,9 @@ async def on_message(message: discord.Message):
 
 
 @bot.command()
+@guild_only()
+# don't run command in uwu channel
+@commands.check(lambda ctx: not is_uwu_channel(ctx))
 async def uwuify(ctx: commands.Context):
     last_message = await ctx.channel.history(limit=1,
                                              before=ctx.message).flatten()
@@ -42,7 +51,11 @@ async def uwuify(ctx: commands.Context):
 async def uwuify_message(message: discord.Message):
     if message and message.content:
         uwu_content = uwuifier.uwuify_sentence(message.content)
-        await message.channel.send(uwu_content)
+        try:
+            await message.channel.send(uwu_content)
+        except HTTPException:
+            await message.channel.send(
+                config.SEND_ERROR.format(author=message.author.mention))
 
 
 @bot.event
