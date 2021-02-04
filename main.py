@@ -20,7 +20,7 @@ async def on_message(message: discord.Message):
     if channel \
             and isinstance(channel, discord.TextChannel) \
             and config.UWU_PATTERN.match(channel.name):
-        await uwuify_clone(message)
+        await uwuify_message(message)
         return
 
     # process other bot commands
