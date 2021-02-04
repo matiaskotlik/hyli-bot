@@ -65,6 +65,9 @@ class Petpet:
 
         try:
             image = image.convert('RGBA')
+            size = min(image.width, image.height)
+            image = image.crop((0, 0, size, size))
+
             frames = []
             frame_count = len(self.frames)
             for i, template_frame in enumerate(self.frames):
