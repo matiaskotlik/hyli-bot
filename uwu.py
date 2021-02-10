@@ -46,7 +46,10 @@ class Uwuifier:
     def uwuify_sentence(self, sentence: str):
         random.seed(sentence)
         words = sentence.split(self.SEPERATOR)
-        return self.SEPERATOR.join(self.uwuify_word(w) for w in words)
+        new_sentence = self.SEPERATOR.join(self.uwuify_word(w) for w in words)
+        if sentence == new_sentence:
+            new_sentence = new_sentence + self.SEPERATOR + random.choice(self.faces + self.actions)
+        return new_sentence
 
     def uwuify_word(self, word: str):
         # uwuify the word
