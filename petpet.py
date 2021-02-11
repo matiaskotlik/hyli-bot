@@ -48,7 +48,8 @@ class Petpet:
 
     def save_gif(self, out, frames):
         if frames:
-            frames[0].save(out, 'GIF',
+            frames[0].save(out,
+                           'GIF',
                            save_all=True,
                            append_images=frames[1:],
                            duration=(1 / self.fps) * 1000,
@@ -65,8 +66,7 @@ class Petpet:
 
         try:
             image = image.convert('RGBA')
-            size = min(image.width, image.height)
-            image = image.crop((0, 0, size, size))
+            image = image.resize((self.sprite_width, self.sprite_height))
 
             frames = []
             frame_count = len(self.frames)

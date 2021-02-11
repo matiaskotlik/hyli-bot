@@ -6,6 +6,7 @@ from uwu import Uwuifier
 from petpet import Petpet
 
 import discord
+from utils import is_uwu_channel
 from discord.ext import commands
 import sys
 import config
@@ -17,11 +18,11 @@ uwuifier = Uwuifier()
 petpet = Petpet()
 
 
-def is_uwu_channel(message: discord.Message):
-    # this will filter guilds for us too
-    return message and message.channel \
-            and isinstance(message.channel, discord.TextChannel) \
-            and config.UWU_PATTERN.match(message.channel.name)
+@bot.event
+async def on_ready():
+    print('Connected!')
+    print(f'Username: {bot.user.name}')
+    print(f'ID: {bot.user.id}')
 
 
 @bot.event
@@ -29,18 +30,15 @@ async def on_message(message: discord.Message):
     if message.author.bot:
         return
 
-    if is_uwu_channel(message):
+    ctx = await bot.get_context(message)
+    if ctx.command is None and is_uwu_channel(message):
         await uwuify_message(message)
-        return
-
-    # process other bot commands
-    await bot.process_commands(message)
+    else:
+        await bot.invoke(ctx)
 
 
 @bot.command()
 @guild_only()
-# don't run command in uwu channel
-@commands.check(lambda ctx: not is_uwu_channel(ctx))
 async def uwuify(ctx: commands.Context):
     last_message = await ctx.channel.history(limit=1,
                                              before=ctx.message).flatten()
