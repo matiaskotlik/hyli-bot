@@ -2,6 +2,7 @@ from io import BytesIO
 from pathlib import Path
 from discord.errors import HTTPException
 from discord.ext.commands.core import guild_only
+from discord.message import Message, MessageReference
 from uwu import Uwuifier
 from petpet import Petpet
 
@@ -40,13 +41,25 @@ async def on_message(message: discord.Message):
 @bot.command()
 @guild_only()
 async def uwuify(ctx: commands.Context):
-    last_message = await ctx.channel.history(limit=1,
-                                             before=ctx.message).flatten()
-    try:
-        last_message = last_message[0]
-    except IndexError:
-        last_message = None
+    last_message = None
 
+    ref = ctx.message.reference
+    if ref:
+        if isinstance(ref, Message):
+            last_message = ref
+        elif isinstance(ref, MessageReference) and isinstance(
+                ref.resolved, Message):
+            last_message = ref.resolved
+
+    if not last_message:
+        last_message = await ctx.channel.history(limit=1,
+                                                 before=ctx.message).flatten()
+        try:
+            last_message = last_message[0]
+        except IndexError:
+            pass
+
+    # passing None to this is fine
     await uwuify_message(last_message)
 
 
