@@ -1,6 +1,9 @@
-from PIL import Image, ImageSequence
-import requests
 import sys
+from itertools import repeat
+from pathlib import Path
+
+import requests
+from PIL import Image, ImageSequence
 
 
 def get_frames(spritesheet, width: int, height: int, sheet_width: int):
@@ -19,7 +22,10 @@ class Petpet:
     frames = get_frames(spritesheet, sprite_width, sprite_height,
                         spritesheet.width)
     default_frame_offsets = [  # xywh
-        [0, 0, 0, 0], [-4, 12, 4, -12], [-12, 18, 12, -18], [-8, 12, 4, -12],
+        [0, 0, 0, 0],
+        [-4, 12, 4, -12],
+        [-12, 18, 12, -18],
+        [-8, 12, 4, -12],
         [-4, 0, 0, 0]
     ]
 
@@ -50,34 +56,40 @@ class Petpet:
 
     def save_gif(self, out, frames):
         if frames:
-            frames[0].save(out,
-                           'GIF',
-                           save_all=True,
-                           append_images=frames[1:],
-                           duration=(1 / self.fps) * 1000,
-                           loop=0)
+            frames[0].save(out, 'GIF', save_all=True, append_images=frames[1:],
+                           duration=(1 / self.fps) * 1000, loop=0)
         else:
             raise ValueError('Need a valid frame')
 
     def petify(self, url: str, out):
         try:
             image = Image.open(requests.get(url, stream=True).raw)
-        except Exception:
-            print(f'Failed to download image from url {url}', file=sys.stderr)
-            return
+        except Exception as e:
+            raise Exception(f'Failed to download image from url {url}') from e
 
         try:
-            image = image.convert('RGBA')
-            image = image.resize((self.sprite_width, self.sprite_height))
+            image_frame_count = getattr(image, "n_frames", 1)
+            converted = False
+            if image_frame_count == 1:
+                converted = True
+                image = image.convert('RGBA')
 
             frames = []
             frame_count = len(self.frames)
             for i, template_frame in enumerate(self.frames):
                 frame = self.base_frame.copy()
 
+                percentage = i / (frame_count - 1)
+                seek = int(percentage * (image_frame_count - 1))
+                if seek:
+                    image.seek(seek)
+
                 image_frame = image.copy()
+                if not converted:
+                    image_frame = image_frame.convert('RGBA')
+
                 x, y, w, h = self.get_sprite_offset(i)
-                image_frame.thumbnail((w, h))
+                image_frame = image_frame.resize((int(w), int(h)))
 
                 frame.paste(image_frame, (int(x), int(y)))
                 frame = Image.alpha_composite(frame, template_frame)
@@ -86,5 +98,5 @@ class Petpet:
 
             self.save_gif(out, frames)
         except Exception as e:
-            print(f'Failed to generate petpet image', file=sys.stderr)
-            raise e
+            raise Exception(
+                f'Failed to generate petpet image for image from {url}') from e

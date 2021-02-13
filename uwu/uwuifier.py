@@ -1,5 +1,11 @@
-import re
 import random
+import re
+from io import BytesIO
+
+import config
+from discord import Message, MessageReference
+from discord.errors import HTTPException
+from discord.ext import commands
 
 
 class Uwuifier:
@@ -15,21 +21,22 @@ class Uwuifier:
         self.words_chance = words
         self.exclamations_chance = exclamations
 
-    faces: list[str] = [
-        '(・`ω´・)', ';;w;;', 'OwO', 'UwU', '>w<', '^w^', 'ÚwÚ', '^-^', ':3',
-        'x3'
-    ]
+    faces: list[str] = ['(・`ω´・)', ';;w;;', 'OwO', 'UwU',
+                        '>w<', '^w^', 'ÚwÚ', '^-^', ':3', 'x3']
     exclamations: list[str] = ['!?', '?!!', '?!?1', '!!11', '?!?!']
     actions: list[str] = [
-        '*blushes*', '*whispers to self*', '*cries*', '*screams*', '*sweats*',
-        '*twerks*', '*runs away*', '*screeches*', '*walks away*',
-        '*sees bulge*', '*looks at you*', '*notices buldge*',
-        '*starts twerking*', '*huggles tightly*', '*boops your nose*'
+        '*blushes*', '*whispers to self*', '*cries*', '*screams*', '*sweats*', '*twerks*',
+        '*runs away*', '*screeches*', '*walks away*', '*sees bulge*', '*looks at you*',
+        '*notices buldge*', '*starts twerking*', '*huggles tightly*', '*boops your nose*'
     ]
-    uwu_map: list[list[str]] = [[r'(?:r|l)', 'w'], [r'(?:R|L)', 'W'],
-                                [r'n([aeiou])',
-                                 'ny\1'], [r'N([aeiou])', 'Ny\1'],
-                                [r'N([AEIOU])', 'Ny\1'], [r'ove', 'uv']]
+    uwu_map: list[list[str]] = [
+        [r'(?:r|l)', 'w'],
+        [r'(?:R|L)', 'W'],
+        [r'n([aeiou])', 'ny\1'],
+        [r'N([aeiou])', 'Ny\1'],
+        [r'N([AEIOU])', 'Ny\1'],
+        [r'ove', 'uv']
+    ]
 
     SEPERATOR = ' '
 
@@ -48,7 +55,8 @@ class Uwuifier:
         words = sentence.split(self.SEPERATOR)
         new_sentence = self.SEPERATOR.join(self.uwuify_word(w) for w in words)
         if sentence == new_sentence:
-            new_sentence = new_sentence + self.SEPERATOR + random.choice(self.faces + self.actions)
+            new_sentence = new_sentence + self.SEPERATOR + \
+                random.choice(self.faces + self.actions)
         return new_sentence
 
     def uwuify_word(self, word: str):
@@ -60,8 +68,8 @@ class Uwuifier:
 
         # uwuify exclamations
         if random.random() < self.exclamations_chance:
-            word = re.sub(r'[?!]+$',
-                          lambda m: random.choice(self.exclamations), word)
+            word = re.sub(
+                r'[?!]+$', lambda m: random.choice(self.exclamations), word)
 
         # uwuify spaces
         face_threshold = self.faces_chance
@@ -77,8 +85,7 @@ class Uwuifier:
             word = word + ' ' + random.choice(self.faces)
         elif (rng <= action_threshold and self.actions):
             word = word + ' ' + random.choice(self.actions)
-        elif (rng <= stutter_threshold and first_character
-              and not self.is_uri(word)):
+        elif (rng <= stutter_threshold and first_character and not self.is_uri(word)):
             stutter = random.randint(1, 3)
             word = (first_character + '-') * stutter + word
 
