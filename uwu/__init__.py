@@ -9,7 +9,7 @@ from discord.ext import commands
 from discord.message import Message, MessageReference
 
 from .petpet import Petpet
-from .utils import is_uwu_channel
+from .utils import is_uwu_channel, is_uri
 from .uwuifier import Uwuifier
 
 
@@ -45,21 +45,23 @@ class Uwu(commands.Cog):
             return
 
         uwu_content = ''
-        if message.content:
+        if message.content and not is_uri(message.content):
             uwu_content = self.uwuifier.uwuify_sentence(message.content)
 
         uwu_files = []
-        # filter images
-        for attachment in [a for a in message.attachments if a.width and a.height]:
+        attachments = [(a.proxy_url, a.filename, a.is_spoiler())
+                       for a in message.attachments if a.width]
+        embeds = [(e.thumbnail.url, e.url, False) for e in message.embeds if e.thumbnail]
+        for url, filename, spoiler in attachments + embeds:
             image_out = BytesIO()
-            self.petpet.petify(attachment.proxy_url, image_out)
+            self.petpet.petify(url, image_out)
             image_out.seek(0)
 
             # change extension to .gif
-            new_filename = str(Path(attachment.filename).with_suffix('.gif'))
+            new_filename = Path(filename).with_suffix('.gif').name
             discord_file = discord.File(fp=image_out,
                                         filename=new_filename,
-                                        spoiler=attachment.is_spoiler())
+                                        spoiler=spoiler)
             uwu_files.append(discord_file)
 
         if uwu_content or uwu_files:

@@ -7,6 +7,7 @@ from discord.ext import commands
 import config
 from banger import Banger
 from uwu import Uwu
+from abhilmao import Abhilmao
 
 if __name__ == '__main__':
     bot = commands.Bot(command_prefix=commands.when_mentioned_or(
@@ -14,6 +15,7 @@ if __name__ == '__main__':
 
     bot.add_cog(Uwu(bot))
     bot.add_cog(Banger(bot))
+    bot.add_cog(Abhilmao(bot))
 
     @bot.event
     async def on_ready():

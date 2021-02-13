@@ -7,6 +7,8 @@ from discord import Message, MessageReference
 from discord.errors import HTTPException
 from discord.ext import commands
 
+from .utils import is_uri
+
 
 class Uwuifier:
     def __init__(self,
@@ -46,10 +48,6 @@ class Uwuifier:
         total = len(re.findall(r'[A-Za-z]', string))
         return uppercase / total
 
-    @staticmethod
-    def is_uri(string: str):
-        return re.match(r'^https?://', string) != None
-
     def uwuify_sentence(self, sentence: str):
         random.seed(sentence)
         words = sentence.split(self.SEPERATOR)
@@ -61,7 +59,7 @@ class Uwuifier:
 
     def uwuify_word(self, word: str):
         # uwuify the word
-        if (not self.is_uri(word)):
+        if (not is_uri(word)):
             for (regex, replacement) in self.uwu_map:
                 if random.random() < self.words_chance:
                     word = re.sub(regex, replacement, word)
@@ -85,7 +83,7 @@ class Uwuifier:
             word = word + ' ' + random.choice(self.faces)
         elif (rng <= action_threshold and self.actions):
             word = word + ' ' + random.choice(self.actions)
-        elif (rng <= stutter_threshold and first_character and not self.is_uri(word)):
+        elif (rng <= stutter_threshold and first_character and not is_uri(word)):
             stutter = random.randint(1, 3)
             word = (first_character + '-') * stutter + word
 

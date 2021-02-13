@@ -7,6 +7,10 @@ from discord import Colour, Embed
 from discord.ext import commands
 
 
+def is_uri(string: str):
+    return string and re.match(r'^https?://', string) != None
+
+
 def channel_matches(regex: re.Pattern):
     def predicate(ctx):
         if not ctx.guild:

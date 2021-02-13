@@ -18,6 +18,9 @@ UWU_PATTERN = re.compile('(uwu|owo)', re.IGNORECASE)
 # REACTION_YES = '✅'
 # REACTION_NO = '❌'
 
+ABHISHEK = 315898478712717312
+ABHI_LMAO = r':lmao:804387193506103316'
+
 # messages
 # INVALID_COMMAND = f'{{author}}: That\'s not a valid command.'
 SEND_ERROR = '{author}: The message is too long.'
