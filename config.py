@@ -19,6 +19,7 @@ UWU_PATTERN = re.compile('(uwu|owo)', re.IGNORECASE)
 # REACTION_NO = '❌'
 
 ABHISHEK = 315898478712717312
+LMAO_PATTERN = re.compile(r'lmf?a+o+', re.IGNORECASE)
 ABHI_LMAO = r':lmao:804387193506103316'
 
 # messages

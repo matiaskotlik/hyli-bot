@@ -11,6 +11,11 @@ class Abhilmao(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        content = message.content
-        if message.author.id == config.ABHISHEK and content and content.strip().lower() == 'lmao':
+        if message.author.id != config.ABHISHEK:
+            return
+
+        if not message.content:
+            return
+
+        if config.LMAO_PATTERN.match(message.content):
             await message.add_reaction(config.ABHI_LMAO)
