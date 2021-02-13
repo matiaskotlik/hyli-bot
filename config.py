@@ -13,11 +13,11 @@ PREFIX = '!'
 UWU_PATTERN = re.compile('(uwu|owo)', re.IGNORECASE)
 
 # reactions
-REACTION_YES = '✅'
-REACTION_NO = '❌'
+# REACTION_YES = '✅'
+# REACTION_NO = '❌'
 
 # messages
-INVALID_COMMAND = f'{{author}}: That\'s not a valid command.'
+# INVALID_COMMAND = f'{{author}}: That\'s not a valid command.'
 SEND_ERROR = '{author}: The message is too long.'
 NO_PERMISSIONS = '{author}: The bot doesn\'t have permissions to do that.'
-MESSAGE_TIMER = 15
+# MESSAGE_TIMER = 15

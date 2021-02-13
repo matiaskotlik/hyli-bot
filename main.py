@@ -37,6 +37,11 @@ async def on_message(message: discord.Message):
     else:
         await bot.invoke(ctx)
 
+@bot.command()
+@guild_only()
+async def banger(ctx: commands.Context):
+    await ctx.send(file=discord.File('banger.png'))
+
 
 @bot.command()
 @guild_only()
@@ -97,10 +102,11 @@ async def uwuify_message(message: discord.Message):
 async def on_command_error(ctx: commands.Context,
                            error: commands.CommandError):
     if isinstance(error, commands.errors.CommandNotFound):
-        # invalid command. notify whoever sent it.
-        await ctx.send(
-            config.INVALID_COMMAND.format(author=ctx.author.mention),
-            delete_after=config.MESSAGE_TIMER)
+        # invalid command. ignore
+        pass
+        # await ctx.send(
+        #     config.INVALID_COMMAND.format(author=ctx.author.mention),
+        #     delete_after=config.MESSAGE_TIMER)
     elif isinstance(error, discord.errors.Forbidden):
         # don't have permissions
         await ctx.send(config.NO_PERMISSIONS.format(author=ctx.author.mention),

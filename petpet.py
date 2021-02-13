@@ -3,35 +3,41 @@ import requests
 import sys
 
 
+def get_frames(spritesheet, width: int, height: int, sheet_width: int):
+    return [
+        spritesheet.crop(
+            (i * width, 0, (i + 1) * width, height)).convert('RGBA')
+        for i in range(sheet_width // width)
+    ]
+
+
 class Petpet:
+    sprite_width = 112
+    sprite_height = 112
+    sprite_size = (sprite_width, sprite_height)
+    spritesheet = Image.open('template.png')
+    frames = get_frames(spritesheet, sprite_width, sprite_height,
+                        spritesheet.width)
+    default_frame_offsets = [  # xywh
+        [0, 0, 0, 0], [-4, 12, 4, -12], [-12, 18, 12, -18], [-8, 12, 4, -12],
+        [-4, 0, 0, 0]
+    ]
+
+    base_frame = Image.new('RGBA', sprite_size, (255, 255, 255, 255))
+
     def __init__(self,
                  squish: float = 1.25,
                  scale: float = 0.875,
                  fps: int = 14,
                  sprite_x: float = 14,
-                 sprite_y: float = 20):
+                 sprite_y: float = 20,
+                 frame_offsets: list[list[int]] = None):
         self.squish = squish
         self.scale = scale
         self.fps = fps
         self.sprite_x = sprite_x
         self.sprite_y = sprite_y
-
-        self.sprite_width = 112
-        self.sprite_height = 112
-        self.spritesheet = Image.open('template.png')
-        self.frames = [
-            self.spritesheet.crop(
-                (i * self.sprite_width, 0, (i + 1) * self.sprite_width,
-                 self.sprite_height)).convert('RGBA')
-            for i in range(self.spritesheet.width // self.sprite_width)
-        ]
-        self.frame_offsets = [  # xywh
-            [0, 0, 0, 0], [-4, 12, 4, -12], [-12, 18, 12, -18],
-            [-8, 12, 4, -12], [-4, 0, 0, 0]
-        ]
-
-        self.base_frame = Image.new('RGBA', self.sprite_size,
-                                    (255, 255, 255, 255))
+        self.frame_offsets = frame_offsets or self.default_frame_offsets
 
     def get_sprite_offset(self, idx: int):
         offset = self.frame_offsets[idx]
@@ -41,10 +47,6 @@ class Petpet:
             (self.sprite_width + offset[2] * self.squish) * self.scale,
             (self.sprite_height + offset[3] * self.squish) * self.scale
         ]
-
-    @property
-    def sprite_size(self):
-        return (self.sprite_width, self.sprite_height)
 
     def save_gif(self, out, frames):
         if frames:
