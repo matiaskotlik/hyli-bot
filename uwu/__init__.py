@@ -1,21 +1,27 @@
 import sys
 from io import BytesIO
 from pathlib import Path
+from typing import Optional, Union
+from utils import SmartMessageConverter
 
 import aiohttp
+from discord.ext.commands.errors import BadArgument
 
 import config
 import discord
 from discord.errors import HTTPException
 from discord.ext import commands
-from discord.message import Message, MessageReference
+from discord.message import Message
 
 from .petpet import Petpet
 from .utils import is_uwu_channel, is_uri
 from .uwuifier import Uwuifier
 
+
 def setup(bot: commands.Bot):
     bot.add_cog(Uwu(bot))
+
+
 class Uwu(commands.Cog):
     def __init__(self, bot, uwuifier: Uwuifier = None, petpet: Petpet = None):
         self.bot = bot
@@ -24,57 +30,70 @@ class Uwu(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def uwuify(self, ctx: commands.Context):
-        last_message = None
+    async def uwuify(self, ctx: commands.Context, target: Union[Message, discord.User, discord.Member] = None):
+        target = target or await self.locate_uwu_message(ctx)
+        if isinstance(target, Message):
+            await self.uwuify_message(ctx, target)
+        elif isinstance(target, discord.User) or isinstance(target, discord.Member):
+            await self.uwuify_user(ctx, target)
+        else:
+            raise commands.BadArgument()  # unreachable
 
+    async def locate_uwu_message(self, ctx: commands.Context) -> Message:
+        message = None
         if ref := ctx.message.reference:
-            if isinstance(ref, Message):
-                last_message = ref
-            elif isinstance(ref, MessageReference) and isinstance(ref.resolved, Message):
-                last_message = ref.resolved
+            message = ref
+        if isinstance(message, discord.MessageReference):
+            message = ref.resolved
 
-        if not last_message:
-            last_message = await ctx.channel.history(limit=1, before=ctx.message).flatten()
+        if isinstance(message, Message):
+            return message
+        elif message == None:
             try:
-                last_message = last_message[0]
+                return (await ctx.channel.history(limit=1, before=ctx.message).flatten())[0]
             except IndexError:
                 pass
 
-        # passing None to this is fine
-        await self.uwuify_message(last_message)
+        raise commands.BadArgument()
 
-    async def uwuify_message(self, message: Message):
+    async def uwuify_user(self, channel, user: Union[discord.User, discord.Member]):
+        await channel.send(files=await self.transform_files([str(user.avatar_url)]))
+
+    async def uwuify_message(self, channel, message: Message):
         if not message:
             return
 
         uwu_content = ''
-        if message.content and not is_uri(message.content):
-            uwu_content = self.uwuifier.uwuify_sentence(message.content)
+        content = message.clean_content
+        if content and not is_uri(content):
+            uwu_content = self.uwuifier.uwuify_sentence(content)
 
-        uwu_files = []
-        attachments = [(a.proxy_url, a.filename, a.is_spoiler())
-                       for a in message.attachments if a.width]
-        embeds = [(e.thumbnail.url, e.url, False) for e in message.embeds if e.thumbnail]
-        for url, filename, spoiler in attachments + embeds:
+        attachments = [a.proxy_url for a in message.attachments if a.width]
+        embeds = [e.thumbnail.url for e in message.embeds if e.thumbnail]
+        uwu_files = await self.transform_files(attachments + embeds)
+
+        if uwu_content or uwu_files:
+            try:
+                await channel.send(content=uwu_content, files=uwu_files)
+            except HTTPException:
+                await channel.send(config.SEND_ERROR.format(author=message.author.mention))
+
+    async def transform_files(self, urls):
+        files = []
+        for url in urls:
             image_out = BytesIO()
             await self.petpet.petify(url, image_out)
             image_out.seek(0)
 
             # change extension to .gif
-            new_filename = Path(filename).with_suffix('.gif').name
+            new_filename = Path(url).with_suffix('.gif').name
             discord_file = discord.File(fp=image_out,
-                                        filename=new_filename,
-                                        spoiler=spoiler)
-            uwu_files.append(discord_file)
-
-        if uwu_content or uwu_files:
-            try:
-                await message.channel.send(content=uwu_content, files=uwu_files)
-            except HTTPException:
-                await message.channel.send(config.SEND_ERROR.format(author=message.author.mention))
+                                        filename=new_filename)
+            files.append(discord_file)
+        return files
 
     @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
+    async def on_message(self, message: Message):
         if message.author.bot:  # abort if bot sent the message
             return
 
@@ -83,4 +102,4 @@ class Uwu(commands.Cog):
             return
 
         if is_uwu_channel(message):
-            await self.uwuify_message(message)
+            await self.uwuify_message(message.channel, message)
