@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 
+def setup(bot: commands.Bot):
+    bot.add_cog(Banger(bot))
 
 class Banger(commands.Cog):
     def __init__(self, bot):

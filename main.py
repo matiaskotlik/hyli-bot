@@ -2,20 +2,32 @@ import sys
 import traceback
 
 import discord
+from aiohttp.client import ClientSession
 from discord.ext import commands
 
 import config
-from banger import Banger
-from uwu import Uwu
-from abhilmao import Abhilmao
+
+
+class Bot(commands.Bot):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.session = self.loop.run_until_complete(self.create_session())
+    
+    async def create_session(self):
+        return ClientSession(loop=self.loop)
+
+    async def close(self):
+        await self.session.close()
+        return await super().close()
+
 
 if __name__ == '__main__':
-    bot = commands.Bot(command_prefix=commands.when_mentioned_or(
-        config.PREFIX), help_command=None)
+    bot = Bot(command_prefix=commands.when_mentioned_or(config.PREFIX),
+              help_command=None)
 
-    bot.add_cog(Uwu(bot))
-    bot.add_cog(Banger(bot))
-    bot.add_cog(Abhilmao(bot))
+    bot.load_extension('uwu')
+    bot.load_extension('banger')
+    bot.load_extension('abhilmao')
 
     @bot.event
     async def on_ready():

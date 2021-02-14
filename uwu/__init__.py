@@ -2,6 +2,8 @@ import sys
 from io import BytesIO
 from pathlib import Path
 
+import aiohttp
+
 import config
 import discord
 from discord.errors import HTTPException
@@ -12,12 +14,13 @@ from .petpet import Petpet
 from .utils import is_uwu_channel, is_uri
 from .uwuifier import Uwuifier
 
-
+def setup(bot: commands.Bot):
+    bot.add_cog(Uwu(bot))
 class Uwu(commands.Cog):
     def __init__(self, bot, uwuifier: Uwuifier = None, petpet: Petpet = None):
         self.bot = bot
         self.uwuifier = uwuifier or Uwuifier()
-        self.petpet = petpet or Petpet()
+        self.petpet = petpet or Petpet(self.bot.session)
 
     @commands.command()
     @commands.guild_only()
@@ -54,7 +57,7 @@ class Uwu(commands.Cog):
         embeds = [(e.thumbnail.url, e.url, False) for e in message.embeds if e.thumbnail]
         for url, filename, spoiler in attachments + embeds:
             image_out = BytesIO()
-            self.petpet.petify(url, image_out)
+            await self.petpet.petify(url, image_out)
             image_out.seek(0)
 
             # change extension to .gif

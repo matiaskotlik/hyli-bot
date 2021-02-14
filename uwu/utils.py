@@ -1,9 +1,7 @@
-import random
 import re
 
 import config
 import discord
-from discord import Colour, Embed
 from discord.ext import commands
 
 

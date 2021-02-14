@@ -5,6 +5,10 @@ from discord.ext import commands
 import config
 
 
+def setup(bot: commands.Bot):
+    bot.add_cog(Abhilmao(bot))
+
+
 class Abhilmao(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

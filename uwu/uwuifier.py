@@ -1,11 +1,5 @@
 import random
 import re
-from io import BytesIO
-
-import config
-from discord import Message, MessageReference
-from discord.errors import HTTPException
-from discord.ext import commands
 
 from .utils import is_uri
 
