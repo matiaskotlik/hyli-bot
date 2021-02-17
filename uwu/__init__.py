@@ -34,10 +34,10 @@ class Uwu(commands.Cog):
         target = target or await self.locate_uwu_message(ctx)
         if isinstance(target, Message):
             await self.uwuify_message(ctx, target)
-        elif isinstance(target, discord.User) or isinstance(target, discord.Member):
+        elif isinstance(target, discord.abc.User):
             await self.uwuify_user(ctx, target)
         else:
-            raise commands.BadArgument()  # unreachable
+            raise Exception(f"target is not valid type: {type(target)} {target}")  # unreachable?
 
     async def locate_uwu_message(self, ctx: commands.Context) -> Message:
         message = None
