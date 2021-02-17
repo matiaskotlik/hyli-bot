@@ -12,7 +12,17 @@ class Bot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.session = self.loop.run_until_complete(self.create_session())
-    
+
+    async def process_commands(self, message: discord.Message):
+        if message.author.bot:
+            return
+
+        ctx = await self.get_context(message)
+        if ctx.valid:
+            await self.invoke(ctx)
+        else:
+            self.dispatch('nocommand', message)
+
     async def create_session(self):
         return ClientSession(loop=self.loop)
 
@@ -28,6 +38,7 @@ if __name__ == '__main__':
     bot.load_extension('uwu')
     bot.load_extension('banger')
     bot.load_extension('abhilmao')
+    bot.load_extension('quote')
 
     @bot.event
     async def on_ready():
@@ -40,13 +51,12 @@ if __name__ == '__main__':
         if isinstance(exception, commands.errors.CommandNotFound):
             # invalid command. ignore
             pass
-            # await ctx.send(
-            #     config.INVALID_COMMAND.format(author=ctx.author.mention),
+            # await ctx.reply(
+            #     config.INVALID_COMMAND,
             #     delete_after=config.MESSAGE_TIMER)
         elif isinstance(exception, discord.errors.Forbidden):
             # don't have permissions
-            await ctx.send(config.NO_PERMISSIONS.format(author=ctx.author.mention),
-                           delete_after=config.MESSAGE_TIMER)
+            await ctx.reply(config.NO_PERMISSIONS, delete_after=config.MESSAGE_TIMER)
         else:
             print('Exception in command {}:'.format(
                 ctx.command), file=sys.stderr)

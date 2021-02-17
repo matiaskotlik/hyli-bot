@@ -1,8 +1,8 @@
 import sys
 from io import BytesIO
 from pathlib import Path
-from typing import Optional, Union
-from utils import SmartMessageConverter
+from typing import Union
+from utils import is_uwu_channel
 
 import aiohttp
 from discord.ext.commands.errors import BadArgument
@@ -14,7 +14,7 @@ from discord.ext import commands
 from discord.message import Message
 
 from .petpet import Petpet
-from .utils import is_uwu_channel, is_uri
+from .utils import is_uri
 from .uwuifier import Uwuifier
 
 
@@ -59,7 +59,7 @@ class Uwu(commands.Cog):
     async def uwuify_user(self, channel, user: Union[discord.User, discord.Member]):
         await channel.send(files=await self.transform_files([str(user.avatar_url)]))
 
-    async def uwuify_message(self, channel, message: Message):
+    async def uwuify_message(self, origin, message: Message):
         if not message:
             return
 
@@ -74,9 +74,9 @@ class Uwu(commands.Cog):
 
         if uwu_content or uwu_files:
             try:
-                await channel.send(content=uwu_content, files=uwu_files)
+                await origin.send(content=uwu_content, files=uwu_files)
             except HTTPException:
-                await channel.send(config.SEND_ERROR.format(author=message.author.mention))
+                await origin.reply(config.SEND_ERROR)
 
     async def transform_files(self, urls):
         files = []
@@ -93,13 +93,6 @@ class Uwu(commands.Cog):
         return files
 
     @commands.Cog.listener()
-    async def on_message(self, message: Message):
-        if message.author.bot:  # abort if bot sent the message
-            return
-
-        ctx = await self.bot.get_context(message)
-        if ctx.valid:  # abort on command
-            return
-
+    async def on_nocommand(self, message: Message):
         if is_uwu_channel(message):
-            await self.uwuify_message(message.channel, message)
+            await self.uwuify_message(message, message)
