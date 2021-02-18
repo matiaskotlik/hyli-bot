@@ -33,7 +33,7 @@ class Uwu(commands.Cog):
     async def uwuify(self, ctx: commands.Context, target: Union[Message, discord.User, discord.Member] = None):
         target = target or await self.locate_uwu_message(ctx)
         if isinstance(target, Message):
-            await self.uwuify_message(ctx, target)
+            await self.uwuify_message(ctx, ctx.channel, target)
         elif isinstance(target, discord.abc.User):
             await self.uwuify_user(ctx, target)
         else:
@@ -59,7 +59,7 @@ class Uwu(commands.Cog):
     async def uwuify_user(self, channel, user: Union[discord.User, discord.Member]):
         await channel.send(files=await self.transform_files([str(user.avatar_url)]))
 
-    async def uwuify_message(self, origin, message: Message):
+    async def uwuify_message(self, origin, channel: discord.TextChannel, message: Message):
         if not message:
             return
 
@@ -74,7 +74,7 @@ class Uwu(commands.Cog):
 
         if uwu_content or uwu_files:
             try:
-                await origin.send(content=uwu_content, files=uwu_files)
+                await channel.send(content=uwu_content, files=uwu_files)
             except HTTPException:
                 await origin.reply(config.SEND_ERROR)
 
@@ -95,4 +95,4 @@ class Uwu(commands.Cog):
     @commands.Cog.listener()
     async def on_nocommand(self, message: Message):
         if is_uwu_channel(message):
-            await self.uwuify_message(message, message)
+            await self.uwuify_message(message, message.channel, message)
