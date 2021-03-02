@@ -16,8 +16,16 @@ class Fatheroflies(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        if not message.content:
+        if message.author.bot or not message.content:
             return
 
-        if config.FATHER_PATTERN.match(message.content):
-            await message.channel.send(config.FATHER_REPLY)
+        filtered = config.filter_line(message.content)
+        try:
+            idx = config.FATHER_SONG_FILTERED.index(filtered)
+        except ValueError:
+            # invalid line
+            return
+
+        idx = (idx + 1) % len(config.FATHER_SONG)
+        line = config.FATHER_SONG[idx]
+        await message.channel.send(line)
