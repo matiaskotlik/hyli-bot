@@ -49,7 +49,7 @@ David Hayter
 Cum Crusador
 The Holy Cum Wars
 Razor-blade Masturbator
-Margret Thatcher
+Margaret Thatcher
 The Cum Snatcher
 Father drowned
 Going down on the cum clown
