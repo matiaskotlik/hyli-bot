@@ -23,6 +23,9 @@ NO_QUOTES = 'There aren\'t any quotes right now. Sorry!'
 # REACTION_YES = '✅'
 # REACTION_NO = '❌'
 
+FATHER_PATTERN = re.compile(r'father\s+of\s+lies', re.IGNORECASE)
+FATHER_REPLY = 'cum in disguise'
+
 ABHISHEK = 315898478712717312
 LMAO_PATTERN = re.compile(r'lmf?a+o+', re.IGNORECASE)
 ABHI_LMAO = r':lmao:804387193506103316'

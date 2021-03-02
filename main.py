@@ -39,6 +39,7 @@ if __name__ == '__main__':
     bot.load_extension('banger')
     bot.load_extension('abhilmao')
     bot.load_extension('quote')
+    bot.load_extension('fatheroflies')
 
     @bot.event
     async def on_ready():
