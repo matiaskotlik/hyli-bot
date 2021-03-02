@@ -46,7 +46,7 @@ A cum smoothie gulped smoothly
 Consume the cum chalice
 Fuck everyone named Alex
 David Hayter
-Cum Crusador
+Cum Crusader
 The Holy Cum Wars
 Razor-blade Masturbator
 Margaret Thatcher
