@@ -29,7 +29,6 @@ class Uwu(commands.Cog):
         self.petpet = petpet or Petpet(self.bot.session)
 
     @commands.command()
-    @commands.guild_only()
     async def uwuify(self, ctx: commands.Context, target: Union[Message, discord.User, discord.Member] = None):
         target = target or await self.locate_uwu_message(ctx)
         if isinstance(target, Message):
