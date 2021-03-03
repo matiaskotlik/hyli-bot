@@ -10,6 +10,10 @@ from discord.message import DeletedReferencedMessage
 import config
 
 
+def filter_line(strg):
+    return re.sub(r'[^A-Za-z\n]', '', strg.lower())
+
+
 async def files_from_message(message: discord.Message) -> list[discord.File]:
     files = []
     for attachment in message.attachments:

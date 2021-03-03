@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 
 import config
+from utils import filter_line
 
 
 def setup(bot: commands.Bot):
@@ -19,7 +20,7 @@ class Fatheroflies(commands.Cog):
         if message.author.bot or not message.content:
             return
 
-        filtered = config.filter_line(message.content)
+        filtered = filter_line(message.content)
         try:
             idx = config.FATHER_SONG_FILTERED.index(filtered)
         except ValueError:
