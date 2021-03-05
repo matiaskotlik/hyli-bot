@@ -53,5 +53,5 @@ LEAGUE_GIF = 'https://tenor.com/view/squidward-spare-some-change-beggar-gif-1308
 
 # messages
 SEND_ERROR = 'The message is too long.'
-NO_PERMISSIONS = 'The bot doesn\'t have permissions to do that.'
+NO_PERMISSIONS = 'This bot is missing permissions to do that.'
 MESSAGE_TIMER = 3

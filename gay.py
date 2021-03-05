@@ -15,7 +15,11 @@ class Gay(commands.Cog):
 
     @commands.command()
     async def gay(self, ctx: commands.Context):
-        await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except commands.MissingPermissions:
+            await ctx.channel.send(config.NO_PERMISSIONS)
+            return
 
         gay1 = await ctx.send(file=discord.File(config.GAY1))
 
