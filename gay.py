@@ -17,7 +17,7 @@ class Gay(commands.Cog):
     async def gay(self, ctx: commands.Context):
         try:
             await ctx.message.delete()
-        except (commands.MissingPermissions, discord.errors.NotFound):
+        except discord.errors.DiscordException:
             await ctx.channel.send(config.NO_PERMISSIONS)
             return
 
