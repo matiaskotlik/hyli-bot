@@ -32,8 +32,6 @@ NO_QUOTES = 'There aren\'t any quotes right now. Sorry!'
 # REACTION_NO = '❌'
 
 
-
-
 with open('fatheroflies.txt', 'r') as fp:
     FATHER_SONG = fp.readlines()
 

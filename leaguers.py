@@ -17,7 +17,7 @@ class Leaguers(commands.Cog):
     async def on_message(self, message: discord.Message):
         if message.author.id != config.MATIAS:
             return
-        
+
         if not message.content:
             return
 

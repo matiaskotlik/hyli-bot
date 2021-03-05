@@ -21,4 +21,3 @@ def channel_matches(regex: re.Pattern):
         return False
 
     return commands.check(predicate)
-
