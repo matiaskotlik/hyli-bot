@@ -5,6 +5,10 @@ from utils import filter_line
 
 load_dotenv()
 
+GAY1 = 'gay1.jpg'
+GAY2 = 'gay2.jpg'
+BANGER = 'banger.png'
+
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
