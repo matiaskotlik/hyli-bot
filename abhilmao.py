@@ -20,12 +20,12 @@ class Abhilmao(commands.Cog):
             return 
 
         error = False
-        for valid_ids, regex, reactions in config.REACTS:
+        for valid_ids, pattern, reactions in config.REACTS:
             # valid_ids = None means any user is fine for this reaction
             if valid_ids and message.author.id not in valid_ids: 
                 continue
 
-            if not regex.match(message.content):
+            if not pattern.search(message.content):
                 continue
 
             for r in reactions:
