@@ -18,7 +18,7 @@ class Quote(commands.Cog):
 
     @commands.Cog.listener()
     async def on_nocommand(self, message: discord.Message):
-        if not is_quotes_channel(message):
+        if message.author.bot or not is_quotes_channel(message):
             return
 
         quote = database.Quote.create(

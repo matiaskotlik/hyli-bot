@@ -95,5 +95,7 @@ class Uwu(commands.Cog):
 
     @commands.Cog.listener()
     async def on_nocommand(self, message: Message):
-        if is_uwu_channel(message):
-            await self.uwuify_message(message, message.channel, message)
+        if message.author.bot or not is_uwu_channel(message):
+            return
+
+        await self.uwuify_message(message, message.channel, message)

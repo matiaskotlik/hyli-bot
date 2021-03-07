@@ -15,6 +15,7 @@ class Bot(commands.Bot):
 
     async def process_commands(self, message: discord.Message):
         if message.author.bot:
+            self.dispatch('nocommand', message)
             return
 
         ctx = await self.get_context(message)
