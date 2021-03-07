@@ -20,10 +20,17 @@ class Abhilmao(commands.Cog):
             return 
 
         error = False
-        for user_id, regex, reaction in config.REACTS:
-            if user_id == message.author.id and regex.match(message.content):
+        for valid_ids, regex, reactions in config.REACTS:
+            # valid_ids = None means any user is fine for this reaction
+            if valid_ids and message.author.id not in valid_ids: 
+                continue
+
+            if not regex.match(message.content):
+                continue
+
+            for r in reactions:
                 try:
-                    await message.add_reaction(reaction)
+                    await message.add_reaction(r)
                 except discord.HTTPException:
                     # emoji does not exist in this server
                     pass

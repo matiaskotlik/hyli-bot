@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 import os
 from dotenv import load_dotenv
 from utils import filter_line
@@ -38,9 +39,10 @@ with open('fatheroflies.txt', 'r') as fp:
 FATHER_SONG = [line.strip() for line in FATHER_SONG]
 FATHER_SONG_FILTERED = [filter_line(line) for line in FATHER_SONG]
 
-REACTS = [
-    [315898478712717312, re.compile(r'lmf?a+o', re.IGNORECASE), '<:lmao:804387193506103316>'], # abhishek lmao
-    [224292077868023809, re.compile(r'ju?n?gl?e?\s*(dif|gap)', re.IGNORECASE), '<:jgdif:818221968297295928>'], # abhishek lmao
+REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
+    ([315898478712717312], re.compile(r'lmf?a+o', re.IGNORECASE), ['<:lmao:804387193506103316>']), # abhishek lmao
+    ([224292077868023809], re.compile(r'ju?n?gl?e?\s*(dif|gap)', re.IGNORECASE), ['<:jgdif:818221968297295928>']), # abhishek lmao
+    (None, re.compile(r'smoge', re.IGNORECASE), [r'<:sadge:753638806460039218>', '🚬']), # abhishek lmao
 ]
 
 MARGARET_PATTERN = re.compile(r'margaret\s+thatcher', re.IGNORECASE)
