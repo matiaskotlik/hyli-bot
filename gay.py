@@ -24,7 +24,7 @@ class Gay(commands.Cog):
         gay1 = await ctx.send(file=discord.File(config.GAY1))
 
         def check(msg):
-            return not msg.author.bot and msg.channel == ctx.channel
+            return msg.channel == ctx.channel
 
         try:
             new_message = await self.bot.wait_for('nocommand', check=check, timeout=30)
