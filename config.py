@@ -38,9 +38,10 @@ with open('fatheroflies.txt', 'r') as fp:
 FATHER_SONG = [line.strip() for line in FATHER_SONG]
 FATHER_SONG_FILTERED = [filter_line(line) for line in FATHER_SONG]
 
-ABHISHEK = 315898478712717312
-LMAO_PATTERN = re.compile(r'lmf?a+o+', re.IGNORECASE)
-ABHI_LMAO = r':lmao:804387193506103316'
+REACTS = [
+    [315898478712717312, re.compile(r'lmf?a+o', re.IGNORECASE), '<:lmao:804387193506103316>'], # abhishek lmao
+    [224292077868023809, re.compile(r'ju?n?gl?e?\s*(dif|gap)', re.IGNORECASE), '<:jgdif:818221968297295928>'], # abhishek lmao
+]
 
 MARGARET_PATTERN = re.compile(r'margaret\s+thatcher', re.IGNORECASE)
 MARGARET_REACT = '💦'

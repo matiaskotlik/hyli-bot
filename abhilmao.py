@@ -1,5 +1,6 @@
 
 import discord
+from discord import permissions
 from discord.ext import commands
 
 import config
@@ -15,11 +16,21 @@ class Abhilmao(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        if message.author.id != config.ABHISHEK:
-            return
-
         if not message.content:
-            return
+            return 
 
-        if config.LMAO_PATTERN.match(message.content):
-            await message.add_reaction(config.ABHI_LMAO)
+        error = False
+        for user_id, regex, reaction in config.REACTS:
+            if user_id == message.author.id and regex.match(message.content):
+                try:
+                    await message.add_reaction(reaction)
+                except discord.HTTPException:
+                    # emoji does not exist in this server
+                    pass
+                except discord.Forbidden:
+                    # permissions issue
+                    error = True
+        
+        if error:
+            message.channel.send(config.NO_PERMISSIONS)
+
