@@ -33,7 +33,7 @@ class Abhilmao(commands.Cog):
                     await message.add_reaction(r)
                 except discord.HTTPException:
                     # emoji does not exist in this server
-                    pass
+                    print(f'Tried to react with invalid emoji {r} in server {message.guild.name}')
                 except discord.Forbidden:
                     # permissions issue
                     error = True
