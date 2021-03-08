@@ -42,7 +42,7 @@ FATHER_SONG_FILTERED = [filter_line(line) for line in FATHER_SONG]
 REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
     ([315898478712717312], re.compile(r'\blmf?a+o+\b', re.IGNORECASE), ['<:lmao:804387193506103316>']), # abhishek lmao
     ([224292077868023809], re.compile(r'\bju?n?gl?e?\W*(dif|gap)', re.IGNORECASE), ['<:jgdif:818221968297295928>']), # abhishek lmao
-    (None, re.compile(r'\bsmoge\b', re.IGNORECASE), [r'<:sadge:753638806460039218>', '🚬']), # abhishek lmao
+    (None, re.compile(r'\bsmoge+r+?\b', re.IGNORECASE), [r'<:sadge:753638806460039218>', '🚬']), # abhishek lmao
 ]
 
 MARGARET_PATTERN = re.compile(r'margaret\s+thatcher', re.IGNORECASE)
