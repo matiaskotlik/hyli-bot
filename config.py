@@ -41,13 +41,12 @@ FATHER_SONG_FILTERED = [filter_line(line) for line in FATHER_SONG]
 
 REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
     ([315898478712717312], re.compile(r'\blmf?a+o+\b', re.IGNORECASE), ['<:lmao:804387193506103316>']), # abhishek lmao
+    ([229713250793553922], re.compile(r'\bcum(ming)?\b', re.IGNORECASE), ['<:cum:819649767666614303>']), # raghav cum
     ([224292077868023809], re.compile(r'\bju?n?gl?e?\W*(dif|gap)', re.IGNORECASE), ['<:jgdif:818221968297295928>']), # matias jgdif
     ([180439899567030272], re.compile(r'\b(fem)?(boy\s*)?cock\b', re.IGNORECASE), ['🍆']), # zapata eggplant
+    #([382674822926434335], re.compile(r'\byubee\b', re.IGNORECASE), ['😺', '🐝']), # violet yubee
     (None, re.compile(r'\bsmoger?\b', re.IGNORECASE), [r'<:sadge:753638806460039218>', '🚬']), # smoge
 ]
-
-MARGARET_PATTERN = re.compile(r'margaret\s+thatcher', re.IGNORECASE)
-MARGARET_REACT = '💦'
 
 MATIAS = 224292077868023809
 LEAGUE_ROLE = 554831644557705236
