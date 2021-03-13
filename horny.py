@@ -15,7 +15,7 @@ class Horny(commands.Cog):
         self.bot = bot
     
     @commands.command()
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(10, 60 * 60 * 12, commands.BucketType.user)
     async def horny(self, ctx: commands.Context, user: discord.User):
         counter, _ = db.HornyCounter.get_or_create(user_id=user.id)
         counter.count += 1
