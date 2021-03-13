@@ -33,8 +33,10 @@ class Bot(commands.Bot):
 
 
 if __name__ == '__main__':
+    intents = discord.Intents.default()
+    intents.members = True
     bot = Bot(command_prefix=commands.when_mentioned_or(config.PREFIX),
-              help_command=None)
+              help_command=None, intents=intents)
 
     bot.load_extension('uwu')
     bot.load_extension('banger')
