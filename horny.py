@@ -16,6 +16,7 @@ class Horny(commands.Cog):
     
     @commands.command()
     @commands.cooldown(10, 60 * 60 * 12, commands.BucketType.user)
+    @commands.has_role('trusted peeps')
     async def horny(self, ctx: commands.Context, user: discord.User):
         counter, _ = db.HornyCounter.get_or_create(user_id=user.id)
         counter.count += 1
