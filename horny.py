@@ -52,7 +52,8 @@ class Horny(commands.Cog):
     def format_user_count(self, guild: discord.Guild, user: discord.User, count: int):
         plural = 's' if count != 1 else ''
         try:
-            name = guild.get_member(user.id).nick
+            member = guild.get_member(user.id)
+            name = member.nick or member.name # if no nick, default to name
         except AttributeError:
             name = f'{user.name}#{user.discriminator}'
         return f'{name} has been horny {count} time{plural}'
