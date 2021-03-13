@@ -18,7 +18,7 @@ class Gay(commands.Cog):
         try:
             await ctx.message.delete()
         except discord.errors.DiscordException:
-            await ctx.channel.send(config.NO_PERMISSIONS)
+            await ctx.send(config.NO_PERMISSIONS)
             return
 
         gay1 = await ctx.send(file=discord.File(config.GAY1))

@@ -4,7 +4,7 @@ from discord.ext import commands
 from peewee import *
 
 import config
-import database
+import database as db
 from utils import files_from_message, is_quotes_channel
 
 
@@ -21,7 +21,7 @@ class Quote(commands.Cog):
         if message.author.bot or not is_quotes_channel(message):
             return
 
-        quote = database.Quote.create(
+        quote = db.Quote.create(
             message_id=message.id, channel_id=message.channel.id, guild_id=message.guild.id)
 
         await message.reply('Saved!', delete_after=config.MESSAGE_TIMER)
@@ -32,9 +32,9 @@ class Quote(commands.Cog):
         message = None
         while not message:
             try:
-                quote = database.Quote \
+                quote = db.Quote \
                     .select() \
-                    .where(database.Quote.guild_id == ctx.guild.id) \
+                    .where(db.Quote.guild_id == ctx.guild.id) \
                     .order_by(fn.Random()) \
                     .get()
                 channel = ctx.guild.get_channel(quote.channel_id)
@@ -43,7 +43,7 @@ class Quote(commands.Cog):
                 message = await channel.fetch_message(quote.message_id)
             except discord.NotFound:
                 quote.delete_instance()
-            except database.Quote.DoesNotExist:
+            except db.Quote.DoesNotExist:
                 await ctx.reply(config.NO_QUOTES, delete_after=config.MESSAGE_TIMER)
                 return
 

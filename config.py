@@ -6,9 +6,10 @@ from utils import filter_line
 
 load_dotenv()
 
-GAY1 = 'gay1.jpg'
-GAY2 = 'gay2.jpg'
-BANGER = 'banger.png'
+GAY1 = 'media/gay1.jpg'
+GAY2 = 'media/gay2.jpg'
+HORNY = 'media/horny.gif'
+BANGER = 'media/banger.png'
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -39,19 +40,24 @@ with open('fatheroflies.txt', 'r') as fp:
 FATHER_SONG = [line.strip() for line in FATHER_SONG]
 FATHER_SONG_FILTERED = [filter_line(line) for line in FATHER_SONG]
 
-REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
-    ([315898478712717312], re.compile(r'\blmf?a+o+\b', re.IGNORECASE), ['<:lmao:804387193506103316>']), # abhishek lmao
-    ([229713250793553922], re.compile(r'\bcum(ming)?\b', re.IGNORECASE), ['<:cum:819649767666614303>']), # raghav cum
-    ([382674822926434335], re.compile(r'\bmm+\s+penis\b', re.IGNORECASE), ['🤤', '🍆']), # violet mmm penis
-    ([382674822926434335], re.compile(r'\byu+bee\b', re.IGNORECASE), ['😺', '🐝']), # violet yubee
-    ([224292077868023809], re.compile(r'\bju?n?gl?e?\W*(dif|gap)', re.IGNORECASE), ['<:jgdif:818221968297295928>']), # matias jgdif
-    ([180439899567030272], re.compile(r'\b(fem)?(boy\s*)?cock\b', re.IGNORECASE), ['🍆']), # zapata eggplant
-    (None, re.compile(r'\bsmoger?\b', re.IGNORECASE), [r'<:sadge:753638806460039218>', '🚬']), # smoge
-]
-
+ABHISHEK = 315898478712717312
+VIOLET = 382674822926434335
 MATIAS = 224292077868023809
+RAGHAV = 229713250793553922
+ZAPATA = 180439899567030272
+
 LEAGUE_ROLE = 554831644557705236
 LEAGUE_GIF = 'https://tenor.com/view/squidward-spare-some-change-beggar-gif-13086110'
+
+REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
+    ([ABHISHEK], re.compile(r'\blmf?a+o+\b', re.IGNORECASE), ['<:lmao:804387193506103316>']), # abhishek lmao
+    ([RAGHAV], re.compile(r'\bcum(ming)?\b', re.IGNORECASE), ['<:cum:819649767666614303>']), # raghav cum
+    ([VIOLET], re.compile(r'\bmm+\s+penis\b', re.IGNORECASE), ['🤤', '🍆']), # violet mmm penis
+    ([VIOLET], re.compile(r'\byu+bee\b', re.IGNORECASE), ['😺', '🐝']), # violet yubee
+    ([MATIAS], re.compile(r'\bju?n?gl?e?\W*(dif|gap)', re.IGNORECASE), ['<:jgdif:818221968297295928>']), # matias jgdif
+    ([ZAPATA], re.compile(r'\b(fem)?(boy\s*)?cock\b', re.IGNORECASE), ['🍆']), # zapata eggplant
+    (None, re.compile(r'\bsmoger?\b', re.IGNORECASE), [r'<:sadge:753638806460039218>', '🚬']), # smoge
+]
 
 # messages
 SEND_ERROR = 'The message is too long.'

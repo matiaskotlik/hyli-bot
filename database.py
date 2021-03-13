@@ -1,3 +1,4 @@
+from horny import Horny
 import os
 
 from peewee import *
@@ -12,6 +13,9 @@ class BaseModel(Model):
     class Meta:
         database = db
 
+class HornyCounter(BaseModel):
+    user_id = BigIntegerField(primary_key=True)
+    count = IntegerField(default=0)
 
 class Quote(BaseModel):
     message_id = BigIntegerField()
@@ -19,4 +23,6 @@ class Quote(BaseModel):
     guild_id = BigIntegerField()
 
 
-db.create_tables([Quote])
+db.create_tables([Quote, HornyCounter])
+
+atomic = db.atomic
