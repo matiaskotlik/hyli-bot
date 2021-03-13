@@ -64,6 +64,14 @@ if __name__ == '__main__':
         elif isinstance(exception, discord.errors.Forbidden):
             # don't have permissions
             await ctx.reply(config.NO_PERMISSIONS, delete_after=config.MESSAGE_TIMER)
+        elif isinstance(exception, commands.CheckFailure):
+            # check fail
+            pass
+        elif isinstance(exception, commands.UserInputError):
+            # arg fail
+            pass
+        elif isinstance(exception, commands.CommandOnCooldown):
+            await ctx.reply(f'Try again in {exception.retry_after:.0f} seconds.')
         else:
             print('Exception in command {}:'.format(
                 ctx.command), file=sys.stderr)
