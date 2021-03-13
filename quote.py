@@ -44,7 +44,7 @@ class Quote(commands.Cog):
             except discord.NotFound:
                 quote.delete_instance()
             except db.Quote.DoesNotExist:
-                await ctx.reply(config.NO_QUOTES, delete_after=config.MESSAGE_TIMER)
+                await ctx.reply('There\'s not any quotes right now. Try again later.', delete_after=config.MESSAGE_TIMER)
                 return
 
         files = await files_from_message(message)

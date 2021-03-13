@@ -27,12 +27,10 @@ UWU_PATTERN = re.compile(r'(uwu|owo)', re.IGNORECASE)
 
 # quotes channel
 QUOTES_PATTERN = re.compile(r'^quotes?$', re.IGNORECASE)
-NO_QUOTES = 'There aren\'t any quotes right now. Sorry!'
 
 # reactions
 # REACTION_YES = '✅'
 # REACTION_NO = '❌'
-
 
 with open('fatheroflies.txt', 'r') as fp:
     FATHER_SONG = fp.readlines()
