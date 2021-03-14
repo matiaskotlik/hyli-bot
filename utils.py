@@ -5,13 +5,10 @@ import re
 
 import discord
 from discord.ext import commands
-from discord.message import DeletedReferencedMessage
 
 import config
 
-
-def filter_line(strg):
-    return re.sub(r'[^A-Za-z\n]', '', strg.lower())
+filter_line = config.filter_line
 
 
 async def files_from_message(message: discord.Message) -> list[discord.File]:

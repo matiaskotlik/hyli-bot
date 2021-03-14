@@ -1,8 +1,14 @@
-import re
-from typing import Optional
-import os
+
+
 from dotenv import load_dotenv
-from utils import filter_line
+import os
+from typing import Optional
+import re
+
+
+def filter_line(strg):
+    return re.sub(r'[^A-Za-z\n]', '', strg.lower())
+
 
 load_dotenv()
 
@@ -35,6 +41,7 @@ QUOTES_PATTERN = re.compile(r'^quotes?$', re.IGNORECASE)
 with open('fatheroflies.txt', 'r') as fp:
     FATHER_SONG = fp.readlines()
 
+
 FATHER_SONG = [line.strip() for line in FATHER_SONG]
 FATHER_SONG_FILTERED = [filter_line(line) for line in FATHER_SONG]
 
@@ -48,13 +55,19 @@ LEAGUE_ROLE = 554831644557705236
 LEAGUE_GIF = 'https://tenor.com/view/squidward-spare-some-change-beggar-gif-13086110'
 
 REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
-    ([ABHISHEK], re.compile(r'\blmf?a+o+\b', re.IGNORECASE), ['<:lmao:804387193506103316>']), # abhishek lmao
-    ([RAGHAV], re.compile(r'\bcum(ming)?\b', re.IGNORECASE), ['<:cum:819649767666614303>']), # raghav cum
-    ([VIOLET], re.compile(r'\bmm+\s+penis\b', re.IGNORECASE), ['🤤', '🍆']), # violet mmm penis
-    ([VIOLET], re.compile(r'\byu+bee\b', re.IGNORECASE), ['😺', '🐝']), # violet yubee
-    ([MATIAS], re.compile(r'\bju?n?gl?e?\W*(dif|gap)', re.IGNORECASE), ['<:jgdif:818221968297295928>']), # matias jgdif
-    ([ZAPATA], re.compile(r'\b(fem)?(boy\s*)?cock\b', re.IGNORECASE), ['🍆']), # zapata eggplant
-    (None, re.compile(r'\bsmoger?\b', re.IGNORECASE), [r'<:sadge:753638806460039218>', '🚬']), # smoge
+    ([ABHISHEK], re.compile(r'\blmf?a+o+\b', re.IGNORECASE),
+     ['<:lmao:804387193506103316>']),  # abhishek lmao
+    ([RAGHAV], re.compile(r'\bcum(ming)?\b', re.IGNORECASE),
+     ['<:cum:819649767666614303>']),  # raghav cum
+    ([VIOLET], re.compile(r'\bmm+\s+penis\b', re.IGNORECASE),
+     ['🤤', '🍆']),  # violet mmm penis
+    ([VIOLET], re.compile(r'\byu+bee\b', re.IGNORECASE), ['😺', '🐝']),  # violet yubee
+    ([MATIAS], re.compile(r'\bju?n?gl?e?\W*(dif|gap)', re.IGNORECASE),
+     ['<:jgdif:818221968297295928>']),  # matias jgdif
+    ([ZAPATA], re.compile(r'\b(fem)?(boy\s*)?cock\b',
+                          re.IGNORECASE), ['🍆']),  # zapata eggplant
+    (None, re.compile(r'\bsmoger?\b', re.IGNORECASE),
+     [r'<:sadge:753638806460039218>', '🚬']),  # smoge
 ]
 
 # messages
