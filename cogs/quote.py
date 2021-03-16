@@ -1,6 +1,6 @@
 import random
-import bson
 
+import bson
 import config
 import discord
 from discord.channel import TextChannel
@@ -60,7 +60,6 @@ class Quote(commands.Cog):
                 message = await channel.fetch_message(quote['message_id'])
             except discord.NotFound:
                 # message was deleted
-                print('asdf')
                 self.collection.delete_one(quote)
                 continue
 
