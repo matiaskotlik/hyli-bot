@@ -62,9 +62,13 @@ class Horny(commands.Cog):
         return f'{name} has been horny {count} time{plural}'
 
     async def get_nickname(self, guild, user_id):
-        user = self.bot.get_user(user_id) or await self.bot.fetch_user(user_id)
         try:
-            member = guild.get_member(user.id)
+            user = self.bot.get_user(user_id) or await self.bot.fetch_user(user_id)
+        except discord.NotFound:
+            return '<Deleted User>'
+
+        member = guild.get_member(user.id)
+        try:
             name = member.nick or member.name  # if no nick, default to name
         except AttributeError:
             name = f'{user.name}#{user.discriminator}'
