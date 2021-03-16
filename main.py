@@ -6,12 +6,15 @@ from aiohttp.client import ClientSession
 from discord.ext import commands
 
 import config
+import database
 
 
 class Bot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.session = self.loop.run_until_complete(self.create_session())
+        self.client = database.get_client_connection()
+        self.database = self.client.hylibot
 
     async def process_commands(self, message: discord.Message):
         if message.author.bot:
@@ -38,14 +41,14 @@ if __name__ == '__main__':
     bot = Bot(command_prefix=commands.when_mentioned_or(config.PREFIX),
               help_command=None, intents=intents)
 
-    bot.load_extension('uwu')
-    bot.load_extension('banger')
-    bot.load_extension('abhilmao')
-    bot.load_extension('quote')
-    bot.load_extension('fatheroflies')
-    bot.load_extension('leaguers')
-    bot.load_extension('gay')
-    bot.load_extension('horny')
+    bot.load_extension('cogs.uwu')
+    bot.load_extension('cogs.banger')
+    bot.load_extension('cogs.abhilmao')
+    bot.load_extension('cogs.quote')
+    bot.load_extension('cogs.fatheroflies')
+    bot.load_extension('cogs.leaguers')
+    bot.load_extension('cogs.gay')
+    bot.load_extension('cogs.horny')
 
     @bot.event
     async def on_ready():

@@ -1,6 +1,7 @@
 
 
 from dotenv import load_dotenv
+from pathlib import Path
 import os
 from typing import Optional
 import re
@@ -12,18 +13,22 @@ def filter_line(strg):
 
 load_dotenv()
 
-GAY1 = 'media/gay1.jpg'
-GAY2 = 'media/gay2.jpg'
-HORNY = 'media/horny.gif'
-BANGER = 'media/banger.png'
+ROOT_DIR = Path(__file__).resolve().parent
 
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+GAY1 = ROOT_DIR / 'media' / 'gay1.jpg'
+GAY2 = ROOT_DIR / 'media' / 'gay2.jpg'
+HORNY = ROOT_DIR / 'media' / 'horny.gif'
+BANGER = ROOT_DIR / 'media' / 'banger.png'
+FATHER_SONG_PATH = ROOT_DIR / 'media' / 'fatheroflies.txt'
+
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 if BOT_TOKEN == None:
     raise ValueError('Need a discord BOT_TOKEN')
 
-DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///:memory:')
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL == None:
+    raise ValueError('Need a DATABASE_URL')
 
 # discord command prefix
 PREFIX = '!'
@@ -38,7 +43,7 @@ QUOTES_PATTERN = re.compile(r'^quotes?$', re.IGNORECASE)
 # REACTION_YES = '✅'
 # REACTION_NO = '❌'
 
-with open('fatheroflies.txt', 'r') as fp:
+with open(FATHER_SONG_PATH, 'r') as fp:
     FATHER_SONG = fp.readlines()
 
 
