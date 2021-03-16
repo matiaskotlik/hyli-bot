@@ -15,7 +15,6 @@ class Horny(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.collection = bot.database.hornycounter
-        self.collection.create_index('user_id', unique=True)
 
     @commands.command()
     @commands.cooldown(15, 60 * 60 * 2, commands.BucketType.user)
@@ -34,7 +33,7 @@ class Horny(commands.Cog):
             .find({'guild_id': ctx.guild.id}) \
             .sort([('count', -1)]) \
             .limit(6)
-
+        
         lines = [self.format_user_count(await self.get_nickname(ctx.guild, record['user_id']), record['count'])
                  for record in records]
         message = 'Most horny people:\n' + '\n'.join(lines)

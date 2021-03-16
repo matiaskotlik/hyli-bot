@@ -15,7 +15,6 @@ class Quote(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.collection = bot.database.quotes
-        self.collection.create_index('message_id', unique=True)
 
     @commands.Cog.listener()
     async def on_nocommand(self, message: discord.Message):
