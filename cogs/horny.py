@@ -16,7 +16,7 @@ class Horny(commands.Cog):
         self.bot = bot
         self.collection = bot.database.hornycounter
 
-    @commands.command()
+    @commands.command(cooldown_after_parsing=True)
     @commands.cooldown(15, 60 * 60 * 2, commands.BucketType.user)
     @commands.guild_only()
     async def horny(self, ctx: commands.Context, user: discord.User):
@@ -28,6 +28,7 @@ class Horny(commands.Cog):
         await self.show(ctx, user, record['count'])
 
     @commands.command(aliases=['tophornies'])
+    @commands.guild_only()
     async def tophorny(self, ctx: commands.Context):
         records = self.collection \
             .find({'guild_id': ctx.guild.id}) \
@@ -41,6 +42,7 @@ class Horny(commands.Cog):
 
     @commands.command()
     @commands.is_owner()
+    @commands.guild_only()
     async def sethorny(self, ctx: commands.Context, user: discord.User, amount: int):
         record = self.collection.find_one_and_update(
             {'user_id': user.id, 'guild_id': ctx.guild.id},
@@ -50,6 +52,7 @@ class Horny(commands.Cog):
         await self.show(ctx, user, record['count'])
 
     @commands.command(aliases=['hornycount', 'hournycount'])
+    @commands.guild_only()
     async def hornystatus(self, ctx: commands.Context, user: discord.User):
         record = self.collection.find_one_and_update(
             {'user_id': user.id},
