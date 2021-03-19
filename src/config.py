@@ -14,12 +14,15 @@ def filter_line(strg):
 load_dotenv()
 
 ROOT_DIR = Path(__file__).resolve().parent
+MEDIA_PATH = ROOT_DIR / 'media'
 
-GAY1 = ROOT_DIR / 'media' / 'gay1.jpg'
-GAY2 = ROOT_DIR / 'media' / 'gay2.jpg'
-HORNY = ROOT_DIR / 'media' / 'horny.gif'
-BANGER = ROOT_DIR / 'media' / 'banger.png'
-FATHER_SONG_PATH = ROOT_DIR / 'media' / 'fatheroflies.txt'
+PETPET_TEMPLATE = MEDIA_PATH / 'template.png'
+GAY1 = MEDIA_PATH / 'gay1.jpg'
+GAY2 = MEDIA_PATH / 'gay2.jpg'
+HORNY = MEDIA_PATH / 'horny.gif'
+BANGER = MEDIA_PATH / 'banger.png'
+FATHER_SONG_PATH = MEDIA_PATH / 'fatheroflies.txt'
+SHUTUP_PATH = MEDIA_PATH / 'shutup'
 
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")

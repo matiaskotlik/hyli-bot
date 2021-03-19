@@ -1,4 +1,5 @@
 from io import BytesIO
+import config
 
 from aiohttp.client import ClientSession
 from PIL import Image
@@ -31,7 +32,7 @@ class Petpet:
                  sprite_x: float = 14,
                  sprite_y: float = 20,
                  frame_offsets: list[list[int]] = None,
-                 spritesheet_path: str = 'template.png'):
+                 spritesheet_path: str = config.PETPET_TEMPLATE):
         self.session = session
         self.squish = squish
         self.scale = scale
