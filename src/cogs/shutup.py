@@ -21,12 +21,12 @@ class Shutup(commands.Cog):
         try:
             await ctx.message.delete()
         except discord.errors.DiscordException:
-            await ctx.send(config.NO_PERMISSIONS)
+            await ctx.send(config.NO_PERMISSIONS, delete_after=config.MESSAGE_TIMER)
             return
 
         files = list(config.SHUTUP_PATH.glob('**/*.mp3'))
         if not files:
-            ctx.reply('Can\'t find any files to play.')
+            ctx.send('Can\'t find any files to play.', delete_after=config.MESSAGE_TIMER)
             return
 
         filename = random.choice(files)
@@ -62,7 +62,7 @@ class Shutup(commands.Cog):
             if ctx.author.voice:
                 await ctx.author.voice.channel.connect()
             else:
-                await ctx.reply("Not connected to a voice channel.")
+                await ctx.send("Not connected to a voice channel.", delete_after=config.MESSAGE_TIMER)
                 return False
         elif ctx.voice_client.is_playing():
             # already playing
