@@ -5,7 +5,26 @@ from typing import Optional
 
 import config
 import discord
+import utils
 from discord.ext import commands
+
+
+async def get_channel_with_name(guild: discord.Guild, name: str):
+    # find channel with matching name
+    for channel in guild.voice_channels:
+        if utils.filter_line(channel.name) == utils.filter_line(name):
+            return channel
+    raise discord.ChannelNotFound(name)
+
+
+class BetterVoiceChannelConverter(commands.VoiceChannelConverter):
+    async def convert(self, ctx, argument):
+        # try normal voicechannel converter
+        try:
+            channel = await super().convert(ctx, argument)
+        except discord.DiscordException:
+            channel = await get_channel_with_name(ctx.guild, argument)
+        return channel
 
 
 def setup(bot: commands.Bot):
@@ -18,7 +37,7 @@ class Shutup(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def shutup(self, ctx: commands.Context, channel: Optional[discord.VoiceChannel]):
+    async def shutup(self, ctx: commands.Context, channel: Optional[BetterVoiceChannelConverter]):
         try:
             await ctx.message.delete()
         except discord.errors.DiscordException:
@@ -27,7 +46,8 @@ class Shutup(commands.Cog):
 
         files = list(config.SHUTUP_PATH.glob('**/*.mp3'))
         if not files:
-            ctx.send('Can\'t find any files to play.', delete_after=config.MESSAGE_TIMER)
+            ctx.send('Can\'t find any files to play.',
+                     delete_after=config.MESSAGE_TIMER)
             return
 
         filename = random.choice(files)
@@ -69,4 +89,3 @@ class Shutup(commands.Cog):
             # already playing
             return False
         return True
-
