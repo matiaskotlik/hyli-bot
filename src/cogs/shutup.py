@@ -17,6 +17,7 @@ class Shutup(commands.Cog):
         self.bot = bot
 
     @commands.command()
+    @commands.guild_only()
     async def shutup(self, ctx: commands.Context, channel: Optional[discord.VoiceChannel]):
         try:
             await ctx.message.delete()
