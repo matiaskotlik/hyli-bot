@@ -79,9 +79,9 @@ class Shutup(commands.Cog):
     async def ensure_voice(self, ctx: commands.Context, channel: Optional[discord.VoiceChannel]):
         if channel:
             if ctx.voice_client:
-                await channel.connect()
-            else:
                 await ctx.voice_client.move_to(channel)
+            else:
+                await channel.connect()
         elif not ctx.voice_client:
             if ctx.author.voice:
                 await ctx.author.voice.channel.connect()
