@@ -1,7 +1,8 @@
 import asyncio
-from io import BytesIO
+import datetime
 import functools
 import re
+from io import BytesIO
 
 import discord
 from discord.ext import commands
@@ -70,6 +71,11 @@ async def try_delete(ctx: commands.Context) -> bool:
     try:
         await ctx.message.delete()
         return True
-    except discord.errors.DiscordException:
+    except discord.Forbidden:
+        # no permissions to delete
         await ctx.send(config.NO_PERMISSIONS, delete_after=config.MESSAGE_TIMER)
+    except discord.NotFound:
+        pass  # message already deleted
+    except discord.HTTPException:
+        pass  # deleting message failed
     return False

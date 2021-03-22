@@ -1,7 +1,9 @@
+import datetime
 import sys
 import traceback
 
 import discord
+import humanize
 from aiohttp.client import ClientSession
 from discord.ext import commands
 
@@ -75,7 +77,9 @@ if __name__ == '__main__':
             # arg fail
             pass
         elif isinstance(exception, commands.CommandOnCooldown):
-            await ctx.reply(f'Try again in {exception.retry_after:.0f} seconds.')
+            delta = humanize.precisedelta(
+                datetime.timedelta(seconds=exception.retry_after))
+            await ctx.reply(f'Try again in {delta}')
         else:
             print('Exception in command {}:'.format(
                 ctx.command), file=sys.stderr)

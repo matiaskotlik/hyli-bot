@@ -39,6 +39,12 @@ class Shutup(commands.Cog):
         except discord.ClientException:
             # sometimes we get disconnected during/right before playing the track
             pass
+    
+    @shutup.error
+    async def shutup_error(self, ctx: commands.Context, error: discord.DiscordException):
+        await utils.try_delete(ctx)
+        if isinstance(error, commands.BadArgument):
+            await ctx.send('That channel doesn\'t exist', delete_after=config.MESSAGE_TIMER)
 
     def after_playing(self, ctx):
         def _after_playing(err):
@@ -64,7 +70,7 @@ class Shutup(commands.Cog):
             if ctx.author.voice:
                 await ctx.author.voice.channel.connect()
             else:
-                await ctx.send("Not connected to a voice channel.", delete_after=config.MESSAGE_TIMER)
+                await ctx.send("Not connected to a voice channel", delete_after=config.MESSAGE_TIMER)
                 return False
         elif ctx.voice_client.is_playing():
             # already playing

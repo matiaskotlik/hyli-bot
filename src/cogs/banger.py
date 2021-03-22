@@ -1,6 +1,7 @@
-import discord
-from discord.ext import commands
 import config
+import discord
+import utils
+from discord.ext import commands
 
 
 def setup(bot: commands.Bot):
@@ -13,4 +14,5 @@ class Banger(commands.Cog):
 
     @commands.command()
     async def banger(self, ctx: commands.Context):
+        await utils.try_delete(ctx)
         await ctx.send(file=discord.File(config.BANGER))

@@ -77,13 +77,13 @@ REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
     ([VIOLET], re.compile(r'\byu+bee\b', re.IGNORECASE), ['😺', '🐝']),  # violet yubee
     ([MATIAS], re.compile(r'\bju?n?gl?e?\W*(dif|gap)', re.IGNORECASE),
      ['<:jgdif:818221968297295928>']),  # matias jgdif
-    ([ZAPATA], re.compile(r'\b(fem)?(boy\s*)?cock\b',
+    ([ZAPATA], re.compile(r'\b(fem)?(boy\W*)?cock\b',
                           re.IGNORECASE), ['🍆']),  # zapata eggplant
     (None, re.compile(r'\bsmoger?\b', re.IGNORECASE),
      [r'<:sadge:753638806460039218>', '🚬']),  # smoge
 ]
 
 # messages
-SEND_ERROR = 'The message is too long.'
-NO_PERMISSIONS = 'This bot is missing permissions to do that.'
+SEND_ERROR = 'The message is too long'
+NO_PERMISSIONS = 'This bot is missing permissions to do that'
 MESSAGE_TIMER = 3
