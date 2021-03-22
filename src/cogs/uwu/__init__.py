@@ -2,19 +2,17 @@ import sys
 from io import BytesIO
 from pathlib import Path
 from typing import Union
-from utils import is_uwu_channel
 
 import aiohttp
-from discord.ext.commands.errors import BadArgument
-
 import config
 import discord
 from discord.errors import HTTPException
 from discord.ext import commands
+from discord.ext.commands.errors import BadArgument
 from discord.message import Message
+from utils import get_implied_message, is_uri, is_uwu_channel
 
 from .petpet import Petpet
-from .utils import is_uri
 from .uwuifier import Uwuifier
 
 
@@ -29,33 +27,16 @@ class Uwu(commands.Cog):
         self.petpet = petpet or Petpet(self.bot.session)
 
     @commands.command()
-    async def uwuify(self, ctx: commands.Context, target: Union[Message, discord.User, discord.Member] = None):
-        target = target or await self.locate_uwu_message(ctx)
+    async def uwuify(self, ctx: commands.Context, target: discord.Member = None):
+        target = target or await get_implied_message(ctx)
         if isinstance(target, Message):
             await self.uwuify_message(ctx, ctx.channel, target)
-        elif isinstance(target, discord.abc.User):
+        elif isinstance(target, discord.Member):
             await self.uwuify_user(ctx, target)
         else:
-            # unreachable?
+            # unreachable
             raise Exception(
                 f"target is not valid type: {type(target)} {target}")
-
-    async def locate_uwu_message(self, ctx: commands.Context) -> Message:
-        message = None
-        if ref := ctx.message.reference:
-            message = ref
-        if isinstance(message, discord.MessageReference):
-            message = ref.resolved
-
-        if isinstance(message, Message):
-            return message
-        elif message == None:
-            try:
-                return (await ctx.channel.history(limit=1, before=ctx.message).flatten())[0]
-            except IndexError:
-                pass
-
-        raise commands.BadArgument()
 
     async def uwuify_user(self, channel, user: Union[discord.User, discord.Member]):
         await channel.send(files=await self.transform_files([str(user.avatar_url)]))

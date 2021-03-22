@@ -1,7 +1,7 @@
 import random
 import re
 
-from .utils import is_uri
+from utils import is_uri
 
 
 class Uwuifier:

@@ -3,8 +3,10 @@ from typing import Optional
 
 import config
 import discord
+import utils
 from discord.ext import commands
 from pymongo import ReturnDocument
+from utils import get_implied_message
 
 
 def setup(bot: commands.Bot):
@@ -19,7 +21,8 @@ class Horny(commands.Cog):
     @commands.command(cooldown_after_parsing=True)
     @commands.cooldown(15, 60 * 60 * 2, commands.BucketType.user)
     @commands.guild_only()
-    async def horny(self, ctx: commands.Context, user: discord.User):
+    async def horny(self, ctx: commands.Context, user: discord.Member = None):
+        user = user or (await utils.get_implied_message(ctx)).author
         record = self.collection.find_one_and_update(
             {'user_id': user.id, 'guild_id': ctx.guild.id},
             {'$inc': {'count': 1}},
@@ -34,7 +37,7 @@ class Horny(commands.Cog):
             .find({'guild_id': ctx.guild.id}) \
             .sort([('count', -1)]) \
             .limit(6)
-        
+
         lines = [self.format_user_count(await self.get_nickname(ctx.guild, record['user_id']), record['count'])
                  for record in records]
         message = 'Most horny people:\n' + '\n'.join(lines)
@@ -43,7 +46,7 @@ class Horny(commands.Cog):
     @commands.command()
     @commands.is_owner()
     @commands.guild_only()
-    async def sethorny(self, ctx: commands.Context, user: discord.User, amount: int):
+    async def sethorny(self, ctx: commands.Context, user: discord.Member, amount: int):
         record = self.collection.find_one_and_update(
             {'user_id': user.id, 'guild_id': ctx.guild.id},
             {'$set': {'count': amount}},
@@ -53,7 +56,7 @@ class Horny(commands.Cog):
 
     @commands.command(aliases=['hornycount', 'hournycount'])
     @commands.guild_only()
-    async def hornystatus(self, ctx: commands.Context, user: discord.User):
+    async def hornystatus(self, ctx: commands.Context, user: discord.Member):
         record = self.collection.find_one_and_update(
             {'user_id': user.id},
             {'$setOnInsert': {'count': 0}},
@@ -64,7 +67,7 @@ class Horny(commands.Cog):
         plural = 's' if count != 1 else ''
         return f'{name} has been horny {count} time{plural}'
 
-    async def get_nickname(self, guild, user_id):
+    async def get_nickname(self, guild: discord.Guild, user_id: int):
         try:
             user = self.bot.get_user(user_id) or await self.bot.fetch_user(user_id)
         except discord.NotFound:
@@ -77,5 +80,5 @@ class Horny(commands.Cog):
             name = f'{user.name}#{user.discriminator}'
         return name
 
-    async def show(self, ctx: commands.Context, user: discord.User, count: int):
+    async def show(self, ctx: commands.Context, user: discord.Member, count: int):
         await ctx.send(self.format_user_count(await self.get_nickname(ctx.guild, user.id), count))

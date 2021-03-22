@@ -10,6 +10,7 @@ import config
 
 filter_line = config.filter_line
 
+
 async def files_from_message(message: discord.Message) -> list[discord.File]:
     files = []
     for attachment in message.attachments:
@@ -36,6 +37,22 @@ def channel_matches(message: discord.Message, pattern: re.Pattern):
         and pattern.match(message.channel.name)
 
 
+async def get_implied_message(ctx: commands.Context, default_to_previous: bool = True) -> discord.Message:
+    message = ctx.message.reference
+    if isinstance(message, discord.MessageReference):
+        message = message.resolved
+    if isinstance(message, discord.Message):
+        return message
+    elif isinstance(message, discord.DeletedReferencedMessage):
+        raise commands.BadArgument()
+
+    if default_to_previous:
+        async for message in ctx.channel.history(limit=1, before=ctx.message):
+            return message  # return first message
+
+    raise commands.BadArgument()
+
+
 def run_in_executor(_func):  # https://stackoverflow.com/a/64506715
     @functools.wraps(_func)
     def _run_in_executor(*args, **kwargs):
@@ -45,13 +62,5 @@ def run_in_executor(_func):  # https://stackoverflow.com/a/64506715
     return _run_in_executor
 
 
-class SmartMessageConverter(commands.MessageConverter):
-    async def convert(self, ctx, argument):
-        print('tryin...')
-        # try replies
-
-        if not message:
-            # this will either throw an exception or set message
-            message = await super().convert(ctx, argument)
-
-        return message
+def is_uri(string: str):
+    return string and re.match(r'^https?://', string) != None

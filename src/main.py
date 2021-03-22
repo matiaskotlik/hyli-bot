@@ -14,7 +14,7 @@ class Bot(commands.Bot):
         super().__init__(*args, **kwargs)
         self.session = self.loop.run_until_complete(self.create_session())
         self.client = database.get_client_connection()
-        self.database = self.client.hylibot
+        self.database = self.client.get_default_database()
 
     async def process_commands(self, message: discord.Message):
         if message.author.bot:

@@ -9,24 +9,6 @@ import utils
 from discord.ext import commands
 
 
-async def get_channel_with_name(guild: discord.Guild, name: str):
-    # find channel with matching name
-    for channel in guild.voice_channels:
-        if utils.filter_line(channel.name) == utils.filter_line(name):
-            return channel
-    raise discord.ChannelNotFound(name)
-
-
-class BetterVoiceChannelConverter(commands.VoiceChannelConverter):
-    async def convert(self, ctx, argument):
-        # try normal voicechannel converter
-        try:
-            channel = await super().convert(ctx, argument)
-        except discord.DiscordException:
-            channel = await get_channel_with_name(ctx.guild, argument)
-        return channel
-
-
 def setup(bot: commands.Bot):
     bot.add_cog(Shutup(bot))
 
@@ -37,7 +19,7 @@ class Shutup(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def shutup(self, ctx: commands.Context, channel: Optional[BetterVoiceChannelConverter]):
+    async def shutup(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
         try:
             await ctx.message.delete()
         except discord.errors.DiscordException:
@@ -67,7 +49,7 @@ class Shutup(commands.Cog):
             async def __after_playing(err):
                 if err:
                     return print(f'Player error: {err}', file=sys.stderr)
-                await ctx.voice_client.disconnect()
+                #await ctx.voice_client.disconnect() disconnect from voice after playing track
             coro = __after_playing(err)
             future = asyncio.run_coroutine_threadsafe(coro, self.bot.loop)
             try:
@@ -76,7 +58,7 @@ class Shutup(commands.Cog):
                 print(f'Error in after_playing: {err}', file=sys.stderr)
         return _after_playing
 
-    async def ensure_voice(self, ctx: commands.Context, channel: Optional[discord.VoiceChannel]):
+    async def ensure_voice(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
         if channel:
             if ctx.voice_client:
                 await ctx.voice_client.move_to(channel)
