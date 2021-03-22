@@ -1,8 +1,9 @@
 import asyncio
-import discord
-from discord.ext import commands
 
 import config
+import discord
+import utils
+from discord.ext import commands
 
 
 def setup(bot: commands.Bot):
@@ -15,11 +16,7 @@ class Gay(commands.Cog):
 
     @commands.command()
     async def gay(self, ctx: commands.Context):
-        try:
-            await ctx.message.delete()
-        except discord.errors.DiscordException:
-            await ctx.send(config.NO_PERMISSIONS)
-            return
+        await utils.try_delete(ctx)
 
         gay1 = await ctx.send(file=discord.File(config.GAY1))
 

@@ -64,3 +64,12 @@ def run_in_executor(_func):  # https://stackoverflow.com/a/64506715
 
 def is_uri(string: str):
     return string and re.match(r'^https?://', string) != None
+
+
+async def try_delete(ctx: commands.Context) -> bool:
+    try:
+        await ctx.message.delete()
+        return True
+    except discord.errors.DiscordException:
+        await ctx.send(config.NO_PERMISSIONS, delete_after=config.MESSAGE_TIMER)
+    return False

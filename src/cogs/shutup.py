@@ -20,11 +20,7 @@ class Shutup(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def shutup(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
-        try:
-            await ctx.message.delete()
-        except discord.errors.DiscordException:
-            await ctx.send(config.NO_PERMISSIONS, delete_after=config.MESSAGE_TIMER)
-            return
+        await utils.try_delete(ctx)
 
         files = list(config.SHUTUP_PATH.glob('**/*.mp3'))
         if not files:
