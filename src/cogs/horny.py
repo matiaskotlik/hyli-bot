@@ -54,9 +54,10 @@ class Horny(commands.Cog):
 
         await self.show(ctx, user, record['count'])
 
-    @commands.command(aliases=['hornycount', 'hournycount'])
+    @commands.command(aliases=['hornycount'])
     @commands.guild_only()
-    async def hornystatus(self, ctx: commands.Context, user: discord.Member):
+    async def hornystatus(self, ctx: commands.Context, user: discord.Member=None):
+        user = user or (await utils.get_implied_message(ctx)).author
         record = self.collection.find_one_and_update(
             {'user_id': user.id},
             {'$setOnInsert': {'count': 0}},
