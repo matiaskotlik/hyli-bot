@@ -35,5 +35,8 @@ I LOVE LEAGUE OF LEGENDS'''
 
     @commands.command()
     async def disable_very_smoge_secret_command(self, ctx: commands.Context):
-        self.disabled = True
-        await ctx.send('New policy has been reverted. Sadge D:')
+        self.disabled = not self.disabled
+        if self.disabled:
+            await ctx.send('New policy has been reverted. Sadge D:')
+        else:
+            await ctx.send('New policy has been enacted. All hail league of legends :D')
