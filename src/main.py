@@ -52,7 +52,6 @@ if __name__ == '__main__':
     bot.load_extension('cogs.gay')
     bot.load_extension('cogs.horny')
     bot.load_extension('cogs.shutup')
-    bot.load_extension('cogs.fools')
 
     @bot.event
     async def on_ready():
