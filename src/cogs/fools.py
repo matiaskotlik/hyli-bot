@@ -34,6 +34,6 @@ I LOVE LEAGUE OF LEGENDS'''
         await message.channel.send(self.message.format(mention=message.author.mention), delete_after=8)
 
     @commands.command()
-    async def disable_very_smoge_secret_command(self, ctx: discord.Context):
+    async def disable_very_smoge_secret_command(self, ctx: commands.Context):
         self.disabled = True
         await ctx.send('New policy has been reverted. Sadge D:')
