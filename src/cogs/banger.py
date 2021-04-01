@@ -14,7 +14,7 @@ class Banger(commands.Cog):
 
     @commands.command()
     async def banger(self, ctx: commands.Context):
-        await utils.try_delete(ctx)
+        await utils.try_delete_cmd(ctx)
         try:
             message = await utils.get_implied_message(ctx, False)
         except commands.BadArgument:

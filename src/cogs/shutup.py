@@ -20,7 +20,7 @@ class Shutup(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def shutup(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
-        await utils.try_delete(ctx)
+        await utils.try_delete_cmd(ctx)
 
         files = list(config.SHUTUP_PATH.glob('**/*.mp3'))
         if not files:
@@ -42,7 +42,7 @@ class Shutup(commands.Cog):
     
     @shutup.error
     async def shutup_error(self, ctx: commands.Context, error: discord.DiscordException):
-        await utils.try_delete(ctx)
+        await utils.try_delete_cmd(ctx)
         if isinstance(error, commands.BadArgument):
             await ctx.send('That channel doesn\'t exist', delete_after=config.MESSAGE_TIMER)
 

@@ -14,7 +14,7 @@ class Leaguers(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
+    async def on_nocommand(self, message: discord.Message):
         if message.author.id != config.MATIAS:
             return
 

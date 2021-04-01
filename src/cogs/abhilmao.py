@@ -15,7 +15,7 @@ class Abhilmao(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
+    async def on_nocommand(self, message: discord.Message):
         if not message.content:
             return 
 

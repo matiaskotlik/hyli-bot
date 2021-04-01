@@ -16,7 +16,7 @@ class Gay(commands.Cog):
 
     @commands.command()
     async def gay(self, ctx: commands.Context):
-        await utils.try_delete(ctx)
+        await utils.try_delete_cmd(ctx)
 
         gay1 = await ctx.send(file=discord.File(config.GAY1))
 

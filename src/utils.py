@@ -66,14 +66,18 @@ def run_in_executor(_func):  # https://stackoverflow.com/a/64506715
 def is_uri(string: str):
     return string and re.match(r'^https?://', string) != None
 
+async def try_delete_cmd(ctx: commands.Context) -> bool:
+    return try_delete(ctx.message, ctx)
 
-async def try_delete(ctx: commands.Context) -> bool:
+async def try_delete(msg: discord.Message, send_handle: discord.abc.Messageable = None) -> bool:
+    if not send_handle:
+        send_handle = msg
     try:
-        await ctx.message.delete()
+        await msg.delete()
         return True
     except discord.Forbidden:
         # no permissions to delete
-        await ctx.send(config.NO_PERMISSIONS, delete_after=config.MESSAGE_TIMER)
+        await send_handle.send(config.NO_PERMISSIONS, delete_after=config.MESSAGE_TIMER)
     except discord.NotFound:
         pass  # message already deleted
     except discord.HTTPException:
