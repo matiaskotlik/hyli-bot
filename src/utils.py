@@ -67,7 +67,7 @@ def is_uri(string: str):
     return string and re.match(r'^https?://', string) != None
 
 async def try_delete_cmd(ctx: commands.Context) -> bool:
-    return try_delete(ctx.message, ctx)
+    return await try_delete(ctx.message, ctx)
 
 async def try_delete(msg: discord.Message, send_handle: discord.abc.Messageable = None) -> bool:
     if not send_handle:
