@@ -20,3 +20,12 @@ class Banger(commands.Cog):
         except commands.BadArgument:
             message = None
         await ctx.send(file=discord.File(config.BANGER), reference=message)
+
+    @commands.command()
+    async def nerd(self, ctx: commands.Context):
+        await utils.try_delete_cmd(ctx)
+        try:
+            message = await utils.get_implied_message(ctx, False)
+        except commands.BadArgument:
+            message = None
+        await ctx.send(file=discord.File(config.NERD), reference=message)

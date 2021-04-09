@@ -21,6 +21,7 @@ GAY1 = MEDIA_PATH / 'gay1.jpg'
 GAY2 = MEDIA_PATH / 'gay2.jpg'
 HORNY = MEDIA_PATH / 'horny.gif'
 BANGER = MEDIA_PATH / 'banger.png'
+BANGER = MEDIA_PATH / 'nerd.png'
 FATHER_SONG_PATH = MEDIA_PATH / 'fatheroflies.txt'
 SHUTUP_PATH = MEDIA_PATH / 'shutup'
 
