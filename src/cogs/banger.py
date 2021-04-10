@@ -1,3 +1,6 @@
+from pathlib import Path
+
+from discord.ext.commands.core import Command
 import config
 import discord
 import utils
@@ -11,21 +14,21 @@ def setup(bot: commands.Bot):
 class Banger(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        # TODO factor this list into config maybe?
+        for name, image_path in [('banger', config.BANGER), ('nerd', config.NERD)]:
+            self.add_binding(name, image_path)
 
-    @commands.command()
-    async def banger(self, ctx: commands.Context):
+    def add_binding(self, name: str, image: Path):
+        async def func(self, ctx):
+            await self.send_image(ctx, image)
+        command = Command(func=func, name=name)
+        command.cog = self
+        self.bot.add_command(command)
+
+    async def send_image(self, ctx: commands.Context, image: Path):
         await utils.try_delete_cmd(ctx)
         try:
             message = await utils.get_implied_message(ctx, False)
         except commands.BadArgument:
             message = None
-        await ctx.send(file=discord.File(config.BANGER), reference=message)
-
-    @commands.command()
-    async def nerd(self, ctx: commands.Context):
-        await utils.try_delete_cmd(ctx)
-        try:
-            message = await utils.get_implied_message(ctx, False)
-        except commands.BadArgument:
-            message = None
-        await ctx.send(file=discord.File(config.NERD), reference=message)
+        await ctx.send(file=discord.File(image), reference=message)
