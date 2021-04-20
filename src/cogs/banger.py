@@ -14,8 +14,7 @@ def setup(bot: commands.Bot):
 class Banger(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        # TODO factor this list into config maybe?
-        for name, image_path in [('banger', config.BANGER), ('nerd', config.NERD)]:
+        for name, image_path in config.IMAGE_COMMANDS:
             self.add_binding(name, image_path)
 
     def add_binding(self, name: str, image: Path):

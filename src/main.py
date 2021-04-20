@@ -53,6 +53,36 @@ if __name__ == '__main__':
     bot.load_extension('cogs.horny')
     bot.load_extension('cogs.shutup')
 
+    @bot.command()
+    @commands.is_owner()
+    async def load(ctx: commands.Context, name: str):
+        try:
+            bot.load_extension(f'cogs.{name}')
+        except Exception as e:
+            await ctx.reply(f'Error: {e}')
+        else:
+            await ctx.reply('Loaded!', delete_after=config.MESSAGE_TIMER)
+
+    @bot.command()
+    @commands.is_owner()
+    async def unload(ctx: commands.Context, name: str):
+        try:
+            bot.unload_extension(f'cogs.{name}')
+        except Exception as e:
+            await ctx.reply(f'Error: {e}')
+        else:
+            await ctx.reply('Unloaded!', delete_after=config.MESSAGE_TIMER)
+
+    @bot.command()
+    @commands.is_owner()
+    async def reload(ctx: commands.Context, name: str):
+        try:
+            bot.reload_extension(f'cogs.{name}')
+        except Exception as e:
+            await ctx.reply(f'Error: {e}')
+        else:
+            await ctx.reply('Reloaded!', delete_after=config.MESSAGE_TIMER)
+
     @bot.event
     async def on_ready():
         print('Connected!')

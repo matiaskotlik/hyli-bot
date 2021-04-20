@@ -39,7 +39,7 @@ class Shutup(commands.Cog):
         except discord.ClientException:
             # sometimes we get disconnected during/right before playing the track
             pass
-    
+
     @shutup.error
     async def shutup_error(self, ctx: commands.Context, error: discord.DiscordException):
         await utils.try_delete_cmd(ctx)
@@ -51,7 +51,7 @@ class Shutup(commands.Cog):
             async def __after_playing(err):
                 if err:
                     return print(f'Player error: {err}', file=sys.stderr)
-                #await ctx.voice_client.disconnect() disconnect from voice after playing track
+                # await ctx.voice_client.disconnect() disconnect from voice after playing track
             coro = __after_playing(err)
             future = asyncio.run_coroutine_threadsafe(coro, self.bot.loop)
             try:

@@ -17,12 +17,12 @@ class Abhilmao(commands.Cog):
     @commands.Cog.listener()
     async def on_nocommand(self, message: discord.Message):
         if not message.content:
-            return 
+            return
 
         error = False
         for valid_ids, pattern, reactions in config.REACTS:
             # valid_ids = None means any user is fine for this reaction
-            if valid_ids and message.author.id not in valid_ids: 
+            if valid_ids and message.author.id not in valid_ids:
                 continue
 
             if not pattern.search(message.content):
@@ -34,11 +34,11 @@ class Abhilmao(commands.Cog):
                 except discord.HTTPException:
                     # emoji does not exist in this server
                     if message.guild:
-                        print(f'Tried to react with invalid emoji {r} in server {message.guild.name} (message.guild.id)')
+                        print(
+                            f'Tried to react with invalid emoji {r} in server {message.guild.name} (message.guild.id)')
                 except discord.Forbidden:
                     # permissions issue
                     error = True
-        
+
         if error:
             message.channel.send(config.NO_PERMISSIONS)
-
