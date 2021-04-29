@@ -22,9 +22,12 @@ GAY2 = MEDIA_PATH / 'gay2.jpg'
 HORNY = MEDIA_PATH / 'horny.gif'
 BANGER = MEDIA_PATH / 'banger.png'
 NERD = MEDIA_PATH / 'nerd.png'
+SINGLE = MEDIA_PATH / 'single.png'
+
 FATHER_SONG_PATH = MEDIA_PATH / 'fatheroflies.txt'
 SHUTUP_PATH = MEDIA_PATH / 'shutup'
 
+HH_SERVER = 401575621819367425
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 if BOT_TOKEN is None:

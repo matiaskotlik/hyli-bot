@@ -1,8 +1,9 @@
 
-import discord
-from discord.ext import commands
+import re
 
 import config
+import discord
+from discord.ext import commands
 
 
 def setup(bot: commands.Bot):
@@ -12,6 +13,20 @@ def setup(bot: commands.Bot):
 class Leaguers(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.Cog.listener()
+    async def on_nocommand(self, message: discord.Message):
+        if message.author.bot:
+            return
+
+        if not message.guild:
+            return
+
+        if message.guild.id != config.HH_SERVER:
+            return
+
+        if re.search(r'\bsingle\Wby\Wchoice', message.content, re.IGNORECASE):
+            await message.channel.send(file=discord.File(config.SINGLE))
 
     @commands.Cog.listener()
     async def on_nocommand(self, message: discord.Message):
