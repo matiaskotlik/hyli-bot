@@ -25,7 +25,6 @@ class Leaguers(commands.Cog):
         if message.guild.id != config.HH_SERVER:
             return
 
-        print('a')
         if re.search(r'\bsingle\Wby\Wchoice', message.content, re.IGNORECASE):
             await message.channel.send(file=discord.File(config.SINGLE))
 
