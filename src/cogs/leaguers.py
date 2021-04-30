@@ -14,8 +14,8 @@ class Leaguers(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_nocommand(self, message: discord.Message):
+    @commands.Cog.listener('on_nocommand')
+    async def single(self, message: discord.Message):
         if message.author.bot:
             return
 
@@ -25,11 +25,12 @@ class Leaguers(commands.Cog):
         if message.guild.id != config.HH_SERVER:
             return
 
+        print('a')
         if re.search(r'\bsingle\Wby\Wchoice', message.content, re.IGNORECASE):
             await message.channel.send(file=discord.File(config.SINGLE))
 
-    @commands.Cog.listener()
-    async def on_nocommand(self, message: discord.Message):
+    @commands.Cog.listener('on_nocommand')
+    async def leaguers(self, message: discord.Message):
         if message.author.id != config.MATIAS:
             return
 
