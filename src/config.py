@@ -3,7 +3,7 @@
 from dotenv import load_dotenv
 from pathlib import Path
 import os
-from typing import Optional
+from typing import Optional, Union
 import re
 
 
@@ -28,6 +28,7 @@ FATHER_SONG_PATH = MEDIA_PATH / 'fatheroflies.txt'
 SHUTUP_PATH = MEDIA_PATH / 'shutup'
 
 HH_SERVER = 401575621819367425
+TEST_SERVER = 523240131482877970
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 if BOT_TOKEN is None:
@@ -67,11 +68,17 @@ MATIAS = 224292077868023809
 RAGHAV = 229713250793553922
 ZAPATA = 180439899567030272
 LUKE = 160524407016521728
+KEVIN = 169935204096409600
 
 LEAGUE_ROLE = 554831644557705236
 LEAGUE_GIF = 'https://tenor.com/view/squidward-spare-some-change-beggar-gif-13086110'
 
 IMAGE_COMMANDS = [('banger', BANGER), ('nerd', NERD)]
+
+REPLIES: list[tuple[Optional[list[int]], Optional[list[int]], Union[re.Pattern, int], Union[Path, str]]] = [
+    (None, [HH_SERVER], re.compile(r'\bsingle\W+by\W+choice\b', re.IGNORECASE), SINGLE),  # single by choice
+    ([KEVIN, MATIAS], None, LEAGUE_ROLE, LEAGUE_GIF),  # league ping
+]
 
 REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
     ([ABHISHEK], re.compile(r'\blmf?a+o+\b', re.IGNORECASE), ['<:lmao:804387193506103316>']),  # abhishek lmao
@@ -79,6 +86,7 @@ REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
     ([VIOLET], re.compile(r'\bmm+\s+penis\b', re.IGNORECASE), ['🤤', '🍆']),  # violet mmm penis
     ([VIOLET], re.compile(r'\byu+bee\b', re.IGNORECASE), ['😺', '🐝']),  # violet yubee
     ([MATIAS], re.compile(r'\bju?n?gl?e?\W*(dif|gap)', re.IGNORECASE), ['<:jgdif:818221968297295928>']),  # matias jgdif
+    # ([MATIAS], re.compile(r'\bju?n?gl?e?\W*(dif|gap)', re.IGNORECASE), ['🇯', '🇬', '🇩', '🇮', '🇫']),  # matias jgdif
     ([ZAPATA], re.compile(r'\b(fem)?(boy\W*)?cock\b', re.IGNORECASE), ['🍆']),  # zapata eggplant
     (None, re.compile(r'\bsmoger?\b', re.IGNORECASE), [r'<:sadge:753638806460039218>', '🚬']),  # smoge
 ]
