@@ -77,7 +77,7 @@ IMAGE_COMMANDS = [('banger', BANGER), ('nerd', NERD)]
 
 REPLIES: list[tuple[Optional[list[int]], Optional[list[int]], Union[re.Pattern, int], Union[Path, str]]] = [
     (None, [HH_SERVER], re.compile(r'\bsingle\W+by\W+choice\b', re.IGNORECASE), SINGLE),  # single by choice
-    ([KEVIN, MATIAS], None, LEAGUE_ROLE, LEAGUE_GIF),  # league ping
+    ([KEVIN, MATIAS, VIOLET], None, LEAGUE_ROLE, LEAGUE_GIF),  # league ping
 ]
 
 REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
