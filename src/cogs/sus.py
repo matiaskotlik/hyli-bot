@@ -27,8 +27,9 @@ class Sus(commands.Cog):
     def user_rng(self, user: discord.Member):
         today = datetime.date.today()
         seed = f'{today}{user.id}'
-        random.seed(seed)
-        return random.choice((True, False))
+        rng = random.Random()
+        rng.seed(seed)
+        return rng.choice((True, False))
 
     @commands.command()
     @commands.guild_only()

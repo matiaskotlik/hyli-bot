@@ -16,6 +16,8 @@ class Uwuifier:
         self.stutters_chance = stutters
         self.words_chance = words
         self.exclamations_chance = exclamations
+    
+    rng = random.Random()
 
     faces: list[str] = ['(・`ω´・)', ';;w;;', 'OwO', 'UwU',
                         '>w<', '^w^', 'ÚwÚ', '^-^', ':3', 'x3']
@@ -43,25 +45,25 @@ class Uwuifier:
         return uppercase / total
 
     def uwuify_sentence(self, sentence: str):
-        random.seed(sentence)
+        self.rng.seed(sentence)
         words = sentence.split(self.SEPERATOR)
         new_sentence = self.SEPERATOR.join(self.uwuify_word(w) for w in words)
         if sentence == new_sentence:
             new_sentence = new_sentence + self.SEPERATOR + \
-                random.choice(self.faces + self.actions)
+                self.rng.choice(self.faces + self.actions)
         return new_sentence
 
     def uwuify_word(self, word: str):
         # uwuify the word
         if (not is_uri(word)):
             for (regex, replacement) in self.uwu_map:
-                if random.random() < self.words_chance:
+                if self.rng.random() < self.words_chance:
                     word = re.sub(regex, replacement, word)
 
         # uwuify exclamations
-        if random.random() < self.exclamations_chance:
+        if self.rng.random() < self.exclamations_chance:
             word = re.sub(
-                r'[?!]+$', lambda m: random.choice(self.exclamations), word)
+                r'[?!]+$', lambda m: self.rng.choice(self.exclamations), word)
 
         # uwuify spaces
         face_threshold = self.faces_chance
@@ -72,13 +74,13 @@ class Uwuifier:
             first_character = word[0]
         except IndexError:
             first_character = None
-        rng = random.random()
+        rng = self.rng.random()
         if (rng <= face_threshold and self.faces):
-            word = word + ' ' + random.choice(self.faces)
+            word = word + ' ' + self.rng.choice(self.faces)
         elif (rng <= action_threshold and self.actions):
-            word = word + ' ' + random.choice(self.actions)
+            word = word + ' ' + self.rng.choice(self.actions)
         elif (rng <= stutter_threshold and first_character and not is_uri(word)):
-            stutter = random.randint(1, 3)
+            stutter = self.rng.randint(1, 3)
             word = (first_character + '-') * stutter + word
 
         return word
