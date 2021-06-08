@@ -85,3 +85,17 @@ async def try_delete(msg: discord.Message, send_handle: discord.abc.Messageable 
     except discord.HTTPException:
         pass  # deleting message failed
     return False
+
+
+async def get_nickname(bot, guild: discord.Guild, user_id: int) -> str:
+    try:
+        user = bot.get_user(user_id) or await bot.fetch_user(user_id)
+    except discord.NotFound:
+        return '<Deleted User>'
+
+    member = guild.get_member(user.id)
+    try:
+        name = member.nick or member.name  # if no nick, default to name
+    except AttributeError:
+        name = f'{user.name}#{user.discriminator}'
+    return name

@@ -38,7 +38,7 @@ class Horny(commands.Cog):
             .sort([('count', -1)]) \
             .limit(6)
 
-        lines = [self.format_user_count(await self.get_nickname(ctx.guild, record['user_id']), record['count'])
+        lines = [self.format_user_count(await utils.get_nickname(self.bot, ctx.guild, record['user_id']), record['count'])
                  for record in records]
         message = 'Most horny people:\n' + '\n'.join(lines)
         await ctx.send(message)
@@ -68,18 +68,5 @@ class Horny(commands.Cog):
         plural = 's' if count != 1 else ''
         return f'{name} has been horny {count} time{plural}'
 
-    async def get_nickname(self, guild: discord.Guild, user_id: int):
-        try:
-            user = self.bot.get_user(user_id) or await self.bot.fetch_user(user_id)
-        except discord.NotFound:
-            return '<Deleted User>'
-
-        member = guild.get_member(user.id)
-        try:
-            name = member.nick or member.name  # if no nick, default to name
-        except AttributeError:
-            name = f'{user.name}#{user.discriminator}'
-        return name
-
     async def show(self, ctx: commands.Context, user: discord.Member, count: int):
-        await ctx.send(self.format_user_count(await self.get_nickname(ctx.guild, user.id), count))
+        await ctx.send(self.format_user_count(await utils.get_nickname(self.bot, ctx.guild, user.id), count))

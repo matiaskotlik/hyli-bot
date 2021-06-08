@@ -17,6 +17,13 @@ class Shutup(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command
+    @commands.guild_only()
+    async def amogus(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
+        await utils.try_delete_cmd(ctx)
+        self.play(config.AMOGUS)
+
+
     @commands.command()
     @commands.guild_only()
     async def shutup(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
@@ -29,10 +36,13 @@ class Shutup(commands.Cog):
             return
 
         filename = random.choice(files)
+        self.play(filename)
 
         if not await self.ensure_voice(ctx, channel):
             return
 
+
+    def play(self, ctx: commands.Context, filename: str):
         source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(filename))
         try:
             ctx.voice_client.play(source, after=self.after_playing(ctx))

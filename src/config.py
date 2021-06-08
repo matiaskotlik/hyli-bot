@@ -24,6 +24,8 @@ BANGER = MEDIA_PATH / 'banger.png'
 NERD = MEDIA_PATH / 'nerd.png'
 SINGLE = MEDIA_PATH / 'single.png'
 
+AMOGUS = MEDIA_PATH / 'amogus.mp3'
+
 FATHER_SONG_PATH = MEDIA_PATH / 'fatheroflies.txt'
 SHUTUP_PATH = MEDIA_PATH / 'shutup'
 
@@ -95,3 +97,37 @@ REACTS: list[tuple[Optional[list[int]], re.Pattern, list[str]]] = [
 SEND_ERROR = 'The message is too long'
 NO_PERMISSIONS = 'This bot is missing permissions to do that'
 MESSAGE_TIMER = 3
+
+HORNIES = [
+    '{} is very horny!',
+    '{} is extra horny today!',
+    'watch out! {} is *omega* horny!',
+    'but how fkn horny is {} today?!',
+    '{} is super super horny rn, careful',
+    '{} is like, super horny',
+    '{} == horny',
+]
+
+NOTHORNIES = [
+    '{} isn\'t that horny today',
+    'sorry but {} is *not* horny',
+    '{} is very *un*horny right now...',
+]
+
+
+SUSSIES = [
+    '{} is very sus!',
+    '{} is extra sus today!',
+    'watch out! {} is *omega* sus!',
+    'but how fkn sus is {} today?!',
+    '{} is super super sus rn, careful',
+    '{} is like, super sus',
+    '{} == sus',
+    'lots of sus on {}...'
+]
+
+NOTSUSSIES = [
+    '{} isn\'t that sus today',
+    'sorry but {} is *not* sus at all',
+    '{} is very *un*sus right now...',
+]
