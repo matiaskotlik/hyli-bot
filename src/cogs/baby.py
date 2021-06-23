@@ -22,7 +22,6 @@ class Banger(commands.Cog):
         self.repetitions = 3
     
     @commands.command()
-    @commands.guild_only()
     async def baby(self, ctx: commands.Context, *args):
         name = ' '.join(args) or 'Violet'
         sections = []
