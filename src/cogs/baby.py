@@ -23,7 +23,7 @@ class Banger(commands.Cog):
     
     @commands.command()
     async def baby(self, ctx: commands.Context, *args):
-        name = ' '.join(args) or 'Violet'
+        name = commands.clean_content(' '.join(args) or 'Violet')
         sections = []
         for role in self.family:
             section = []
