@@ -34,5 +34,8 @@ class Banger(commands.Cog):
             section.append(f'{role} {name}!')
             sections.append('\n'.join(section))
 
-        await ctx.send('\n\n'.join(sections))
+        try:
+            await ctx.send('\n\n'.join(sections))
+        except HTTPException:
+            await ctx.reply(config.SEND_ERROR)
 
