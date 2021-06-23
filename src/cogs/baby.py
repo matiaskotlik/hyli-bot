@@ -28,7 +28,7 @@ class Banger(commands.Cog):
         for role in self.family:
             section = []
             line = f'{role} {name}, ' + ', '.join(['doo'] * self.doos)
-            for _ in self.repetitions:
+            for _ in range(self.repetitions):
                 section.append(line)
 
             section.append(f'{role} {name}!')
