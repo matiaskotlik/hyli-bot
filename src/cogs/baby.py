@@ -34,5 +34,5 @@ class Banger(commands.Cog):
             section.append(f'{role} {name}!')
             sections.append('\n'.join(section))
 
-        ctx.send('\n\n'.join(sections))
+        await ctx.send('\n\n'.join(sections))
 
