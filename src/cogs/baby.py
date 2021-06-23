@@ -24,12 +24,15 @@ class Banger(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def baby(self, ctx: commands.Context, name: str = 'Violet'):
-        lines = []
+        sections = []
         for role in self.family:
+            section = []
             line = f'{role} {name}, ' + ', '.join(['doo'] * self.doos)
             for _ in self.repetitions:
-                lines.append(line)
+                section.append(line)
 
-            lines.append(f'{role} {name}!')
-        ctx.send('\n'.join(lines))
+            section.append(f'{role} {name}!')
+            sections.append('\n'.join(section))
+
+        ctx.send('\n\n'.join(sections))
 
