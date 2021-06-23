@@ -41,7 +41,7 @@ if __name__ == '__main__':
     intents = discord.Intents.default()
     intents.members = True
     bot = Bot(command_prefix=commands.when_mentioned_or(config.PREFIX),
-              help_command=None, intents=intents)
+              help_command=None, allowed_mentions=discord.AllowedMentions.none(), intents=intents)
 
     bot.load_extension('cogs.uwu')
     bot.load_extension('cogs.banger')
