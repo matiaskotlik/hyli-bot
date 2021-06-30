@@ -21,6 +21,7 @@ GAY1 = MEDIA_PATH / 'gay1.jpg'
 GAY2 = MEDIA_PATH / 'gay2.jpg'
 HORNY = MEDIA_PATH / 'horny.gif'
 BANGER = MEDIA_PATH / 'banger.png'
+MAD = MEDIA_PATH / 'mad.png'
 NERD = MEDIA_PATH / 'nerd.png'
 SINGLE = MEDIA_PATH / 'single.png'
 
@@ -76,7 +77,6 @@ KEVIN = 169935204096409600
 LEAGUE_ROLE = 554831644557705236
 LEAGUE_GIF = 'https://tenor.com/view/squidward-spare-some-change-beggar-gif-13086110'
 
-IMAGE_COMMANDS = [('banger', BANGER), ('nerd', NERD)]
 
 # messages
 SEND_ERROR = 'The message is too long'
