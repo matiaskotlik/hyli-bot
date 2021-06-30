@@ -7,13 +7,18 @@ import discord
 from discord.ext import commands
 
 
+
 def setup(bot: commands.Bot):
     bot.add_cog(Leaguers(bot))
 
 
-class Leaguers(commands.Cog):
+class Leaguers(commands.Cog, name="Meme Replies"):
     def __init__(self, bot):
         self.bot = bot
+        self.replies: list[tuple[Optional[list[int]], Optional[list[int]], Union[re.Pattern, int], Union[Path, str]]] = [
+            (None, [config.HH_SERVER], re.compile(r'\bsingle\W+by\W+choice\b', re.IGNORECASE), config.SINGLE),  # single by choice
+            ([config.KEVIN, config.MATIAS, config.VIOLET], None, config.LEAGUE_ROLE, config.LEAGUE_GIF),  # league ping
+        ]
 
     @commands.Cog.listener()
     @commands.guild_only()
@@ -21,7 +26,7 @@ class Leaguers(commands.Cog):
         if not message.content:
             return
 
-        for valid_users, valid_guilds, criteria, reply_content in config.REPLIES:
+        for valid_users, valid_guilds, criteria, reply_content in self.replies:
             if valid_users and message.author.id not in valid_users:
                 continue
 

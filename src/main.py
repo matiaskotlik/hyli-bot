@@ -8,6 +8,7 @@ from aiohttp.client import ClientSession
 from discord.ext import commands
 
 import config
+import help
 import database
 
 
@@ -40,8 +41,9 @@ class Bot(commands.Bot):
 if __name__ == '__main__':
     intents = discord.Intents.default()
     intents.members = True
+    intents.messages = True
     bot = Bot(command_prefix=commands.when_mentioned_or(config.PREFIX),
-              help_command=None, allowed_mentions=discord.AllowedMentions.none(), intents=intents)
+              help_command=help.HelpCommand(), allowed_mentions=discord.AllowedMentions.none(), intents=intents)
 
     bot.load_extension('cogs.uwu')
     bot.load_extension('cogs.banger')
@@ -54,9 +56,11 @@ if __name__ == '__main__':
     bot.load_extension('cogs.shutup')
     bot.load_extension('cogs.sus')
     bot.load_extension('cogs.baby')
+    bot.load_extension('cogs.kevinisuseless')
+    bot.load_extension('cogs.undelete')
     bot.load_extension('cogs.coinflip')
 
-    @bot.command()
+    @bot.command(brief="Load a module", hidden=True)
     @commands.is_owner()
     async def load(ctx: commands.Context, name: str):
         try:
@@ -66,7 +70,7 @@ if __name__ == '__main__':
         else:
             await ctx.reply('Loaded!', delete_after=config.MESSAGE_TIMER)
 
-    @bot.command()
+    @bot.command(brief="Unload a module", hidden=True)
     @commands.is_owner()
     async def unload(ctx: commands.Context, name: str):
         try:
@@ -76,7 +80,7 @@ if __name__ == '__main__':
         else:
             await ctx.reply('Unloaded!', delete_after=config.MESSAGE_TIMER)
 
-    @bot.command()
+    @bot.command(brief="Reload a module", hidden=True)
     @commands.is_owner()
     async def reload(ctx: commands.Context, name: str):
         try:

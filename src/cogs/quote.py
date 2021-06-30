@@ -12,7 +12,7 @@ def setup(bot: commands.Bot):
     bot.add_cog(Quote(bot))
 
 
-class Quote(commands.Cog):
+class Quote(commands.Cog, name="Quote Database"):
     def __init__(self, bot):
         self.bot = bot
         self.collection = bot.database.quotes
@@ -31,7 +31,7 @@ class Quote(commands.Cog):
 
         await message.reply('Saved!', delete_after=config.MESSAGE_TIMER)
 
-    @commands.command()
+    @commands.command(brief="Shows a random quote")
     @commands.guild_only()
     async def quote(self, ctx: commands.Context):
         message = None

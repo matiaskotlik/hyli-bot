@@ -13,18 +13,26 @@ def setup(bot: commands.Bot):
     bot.add_cog(Shutup(bot))
 
 
-class Shutup(commands.Cog):
+class Shutup(commands.Cog, name="Voice Sound Effects"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command
+    @commands.command(brief="Amogus")
     @commands.guild_only()
     async def amogus(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
         await utils.try_delete_cmd(ctx)
-        self.play(config.AMOGUS)
+        if await self.ensure_voice(ctx):
+            self.play(ctx, config.AMOGUS)
+
+    @commands.command(brief="Yeah")
+    @commands.guild_only()
+    async def yeah(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
+        await utils.try_delete_cmd(ctx)
+        if await self.ensure_voice(ctx):
+            self.play(ctx, config.YEAH)
 
 
-    @commands.command()
+    @commands.command(brief="Tells the gamers in voice to shut the fuck up")
     @commands.guild_only()
     async def shutup(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
         await utils.try_delete_cmd(ctx)
@@ -36,10 +44,10 @@ class Shutup(commands.Cog):
             return
 
         filename = random.choice(files)
-        self.play(filename)
 
         if not await self.ensure_voice(ctx, channel):
             return
+        self.play(ctx, filename)
 
 
     def play(self, ctx: commands.Context, filename: str):

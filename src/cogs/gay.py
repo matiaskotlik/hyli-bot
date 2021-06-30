@@ -10,11 +10,11 @@ def setup(bot: commands.Bot):
     bot.add_cog(Gay(bot))
 
 
-class Gay(commands.Cog):
+class Gay(commands.Cog, name="Gay"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(brief="Catches a homosexual")
     async def gay(self, ctx: commands.Context):
         await utils.try_delete_cmd(ctx)
 

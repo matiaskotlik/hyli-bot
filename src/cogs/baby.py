@@ -5,10 +5,10 @@ from discord.ext import commands
 
 
 def setup(bot: commands.Bot):
-    bot.add_cog(Banger(bot))
+    bot.add_cog(Baby(bot))
 
 
-class Banger(commands.Cog):
+class Baby(commands.Cog, name="Baby Shark"):
     def __init__(self, bot):
         self.bot = bot
         self.doos = 6
@@ -21,7 +21,7 @@ class Banger(commands.Cog):
         ]
         self.repetitions = 3
     
-    @commands.command()
+    @commands.command(brief="Sings the baby shark song")
     async def baby(self, ctx: commands.Context, *args):
         name = ' '.join(args) or 'Violet'
         sections = []

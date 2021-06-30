@@ -13,12 +13,12 @@ def setup(bot: commands.Bot):
     bot.add_cog(Horny(bot))
 
 
-class Horny(commands.Cog):
+class Horny(commands.Cog, name="Horny Tracker"):
     def __init__(self, bot):
         self.bot = bot
         self.collection = bot.database.hornycounter
 
-    @commands.command(cooldown_after_parsing=True)
+    @commands.command(brief="Marks a horny gamer", cooldown_after_parsing=True)
     @commands.cooldown(15, 60 * 60 * 2, commands.BucketType.user)
     @commands.guild_only()
     async def horny(self, ctx: commands.Context, user: discord.Member = None):
@@ -30,7 +30,7 @@ class Horny(commands.Cog):
 
         await self.show(ctx, user, record['count'])
 
-    @commands.command(aliases=['tophornies'])
+    @commands.command(brief="Shows the horny leaderboards", aliases=['tophornies'])
     @commands.guild_only()
     async def tophorny(self, ctx: commands.Context):
         records = self.collection \
@@ -43,7 +43,7 @@ class Horny(commands.Cog):
         message = 'Most horny people:\n' + '\n'.join(lines)
         await ctx.send(message)
 
-    @commands.command()
+    @commands.command(brief="Sets the horny count for a gamer", hidden=True)
     @commands.is_owner()
     @commands.guild_only()
     async def sethorny(self, ctx: commands.Context, user: discord.Member, amount: int):
@@ -54,7 +54,7 @@ class Horny(commands.Cog):
 
         await self.show(ctx, user, record['count'])
 
-    @commands.command(aliases=['hornycount'])
+    @commands.command(brief="Shows the horny count for a gamer", aliases=['hornycount'])
     @commands.guild_only()
     async def hornystatus(self, ctx: commands.Context, user: discord.Member = None):
         user = user or (await utils.get_implied_message(ctx)).author

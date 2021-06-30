@@ -11,7 +11,7 @@ def setup(bot: commands.Bot):
     bot.add_cog(Banger(bot))
 
 
-class Banger(commands.Cog):
+class Banger(commands.Cog, name="Meme Generator"):
     def __init__(self, bot):
         self.bot = bot
         for name, image_path in config.IMAGE_COMMANDS:
@@ -20,7 +20,7 @@ class Banger(commands.Cog):
     def add_binding(self, name: str, image: Path):
         async def func(self, ctx):
             await self.send_image(ctx, image)
-        command = Command(func=func, name=name)
+        command = Command(func=func, name=name, brief=f"Sends a {name.capitalize()}")
         command.cog = self
         self.bot.add_command(command)
 

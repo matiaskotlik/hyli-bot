@@ -20,13 +20,13 @@ def setup(bot: commands.Bot):
     bot.add_cog(Uwu(bot))
 
 
-class Uwu(commands.Cog):
+class Uwu(commands.Cog, name="UwU"):
     def __init__(self, bot, uwuifier: Uwuifier = None, petpet: Petpet = None):
         self.bot = bot
         self.uwuifier = uwuifier or Uwuifier()
         self.petpet = petpet or Petpet(self.bot.session)
 
-    @commands.command()
+    @commands.command(brief="Uwuifies a message or gamer")
     async def uwuify(self, ctx: commands.Context, target: discord.Member = None):
         target = target or await get_implied_message(ctx)
         if isinstance(target, Message):

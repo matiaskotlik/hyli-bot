@@ -11,7 +11,7 @@ def setup(bot: commands.Bot):
     bot.add_cog(Fatheroflies(bot))
 
 
-class Fatheroflies(commands.Cog):
+class Fatheroflies(commands.Cog, name="Cum Song"):
     def __init__(self, bot):
         self.bot = bot
 
