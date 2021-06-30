@@ -21,14 +21,14 @@ class Shutup(commands.Cog, name="Voice Sound Effects"):
     @commands.guild_only()
     async def amogus(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
         await utils.try_delete_cmd(ctx)
-        if await self.ensure_voice(ctx):
+        if await self.ensure_voice(ctx, channel):
             self.play(ctx, config.AMOGUS)
 
     @commands.command(brief="Yeah")
     @commands.guild_only()
     async def yeah(self, ctx: commands.Context, channel: discord.VoiceChannel = None):
         await utils.try_delete_cmd(ctx)
-        if await self.ensure_voice(ctx):
+        if await self.ensure_voice(ctx, channel):
             self.play(ctx, config.YEAH)
 
 
