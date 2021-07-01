@@ -28,6 +28,15 @@ class Undelete(commands.Cog, name="Message Undeleter"):
             return
         self.clean_log()
         self.log.append(LoggedMessage.from_message(message))
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, before: discord.Message, after: discord.Message):
+        if before.author.bot:
+            return
+        if before.content == after.content:
+            return
+        self.clean_log()
+        self.log.append(LoggedMessage.from_message(before))
     
     def clean_log(self):
         now = datetime.datetime.now()
