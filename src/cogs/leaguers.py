@@ -1,7 +1,7 @@
 
 from pathlib import Path
 import re
-
+from typing import Optional, Union
 import config
 import discord
 from discord.ext import commands
@@ -21,9 +21,11 @@ class Leaguers(commands.Cog, name="Meme Replies"):
         ]
 
     @commands.Cog.listener()
-    @commands.guild_only()
     async def on_nocommand(self, message: discord.Message):
         if not message.content:
+            return
+
+        if not message.guild:
             return
 
         for valid_users, valid_guilds, criteria, reply_content in self.replies:

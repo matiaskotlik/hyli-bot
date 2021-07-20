@@ -58,6 +58,7 @@ if __name__ == '__main__':
     bot.load_extension('cogs.baby')
     bot.load_extension('cogs.kevinisuseless')
     bot.load_extension('cogs.undelete')
+    bot.load_extension('cogs.camel')
     bot.load_extension('cogs.coinflip')
 
     @bot.command(brief="Load a module", hidden=True)

@@ -9,7 +9,7 @@ from discord.ext import commands
 @dataclass
 class LoggedMessage:
     channel: int
-    name: str
+    date: datetime.datetime
     text: str
 
     @classmethod
