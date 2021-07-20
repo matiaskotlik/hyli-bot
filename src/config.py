@@ -7,10 +7,6 @@ from typing import Optional, Union
 import re
 
 
-def filter_line(strg):
-    return re.sub(r'[^A-Za-z\n]', '', strg.lower())
-
-
 load_dotenv()
 
 ROOT_DIR = Path(__file__).resolve().parent
@@ -29,6 +25,7 @@ AMOGUS = MEDIA_PATH / 'amogus.mp3'
 YEAH = MEDIA_PATH / 'yeah.mp3'
 
 FATHER_SONG_PATH = MEDIA_PATH / 'fatheroflies.txt'
+ASTRONAUT_SONG_PATH = MEDIA_PATH / 'astronaut.txt'
 SHUTUP_PATH = MEDIA_PATH / 'shutup'
 
 HH_SERVER = 401575621819367425
@@ -54,14 +51,6 @@ QUOTES_PATTERN = re.compile(r'^quotes?$', re.IGNORECASE)
 # reactions
 # REACTION_YES = '✅'
 # REACTION_NO = '❌'
-
-with open(FATHER_SONG_PATH, 'r') as fp:
-    FATHER_SONG = fp.readlines()
-
-
-FATHER_SONG = [line.strip() for line in FATHER_SONG]
-FATHER_SONG_FILTERED = [filter_line(line) for line in FATHER_SONG]
-
 
 LFTP = 333707773332291605
 LFTP_TRUSTED_ROLE = 618937559996956678

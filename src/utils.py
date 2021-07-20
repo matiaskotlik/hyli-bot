@@ -9,7 +9,6 @@ from discord.ext import commands
 
 import config
 
-filter_line = config.filter_line
 
 
 async def files_from_message(message: discord.Message) -> list[discord.File]:

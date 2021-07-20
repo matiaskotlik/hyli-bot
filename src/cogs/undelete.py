@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import datetime
 import collections
 
@@ -5,13 +6,18 @@ import config
 import discord
 from discord.ext import commands
 
-class LoggedMessage(collections.namedtuple('LoggedMessage', ['channel', 'date', 'text'])):
+@dataclass
+class LoggedMessage:
+    channel: int
+    name: str
+    text: str
+
     @classmethod
     def from_message(cls, message: discord.Message):
         channel = message.channel.id
         now = datetime.datetime.now()
         text = f"{message.author.display_name}: {message.content}"
-        return cls(channel, now, text)
+        return LoggedMessage(channel, now, text)
 
 def setup(bot: commands.Bot):
     bot.add_cog(Undelete(bot))
@@ -42,7 +48,7 @@ class Undelete(commands.Cog, name="Message Undeleter"):
         now = datetime.datetime.now()
         self.log = [msg for msg in self.log if (now <= msg.date + self.expire)]
 
-    @commands.command(brief="Undeletes a message, temporarily")
+    @commands.command(brief="Undeletes a message")
     async def undelete(self, ctx: commands.Context):
         self.clean_log()
         messages = [msg for msg in self.log if (ctx.channel.id == msg.channel)]
