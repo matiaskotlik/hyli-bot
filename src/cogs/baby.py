@@ -34,8 +34,5 @@ class Baby(commands.Cog, name="Baby Shark"):
             section.append(f'{role} {name}!')
             sections.append('\n'.join(section))
 
-        try:
-            await ctx.send('\n\n'.join(sections))
-        except HTTPException:
-            await ctx.reply(config.SEND_ERROR)
+        await ctx.send('\n\n'.join(sections))
 

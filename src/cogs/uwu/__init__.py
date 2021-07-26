@@ -55,10 +55,7 @@ class Uwu(commands.Cog, name="UwU"):
         uwu_files = await self.transform_files(attachments + embeds)
 
         if uwu_content or uwu_files:
-            try:
-                await channel.send(content=uwu_content, files=uwu_files)
-            except HTTPException:
-                await origin.reply(config.SEND_ERROR)
+            await channel.send(content=uwu_content, files=uwu_files)
 
     async def transform_files(self, urls):
         files = []
