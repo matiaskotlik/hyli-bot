@@ -14,15 +14,20 @@ class Camel(commands.Cog, name="Camel"):
         self.bot = bot
     
     @commands.command(brief="Accidently send someone a sexy camel")
-    async def camel(self, ctx: commands.Context, user: discord.Member = None):
+    @commands.guild_only()
+    async def camel(self, ctx: commands.Context, user: discord.User):
         await utils.try_delete_cmd(ctx)
-        if user:
-            await ctx.send("Sending camel...", delete_after=config.MESSAGE_TIMER)
+        if ctx.guild.get_member(user.id) is None:
+            await ctx.send("That user isn't in this server", delete_after=config.MESSAGE_TIMER)
+            return
 
-            await user.send(file=discord.File(config.CAMEL))
-            await asyncio.sleep(5)
-            async with user.typing():
-                await asyncio.sleep(3)
-            await user.send("Sorry wrong person")
-        else:
-            await ctx.send("Who do you want to send the camel to?", delete_after=config.MESSAGE_TIMER)
+        await ctx.send("Sending camel...", delete_after=config.MESSAGE_TIMER)
+
+        await self.send_camel(user)
+
+    async def send_camel(self, user: discord.User):
+        await user.send(file=discord.File(config.CAMEL))
+        await asyncio.sleep(5)
+        async with user.typing():
+            await asyncio.sleep(3)
+        await user.send("Sorry wrong person")
