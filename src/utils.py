@@ -78,7 +78,8 @@ async def try_delete(msg: discord.Message, send_handle: discord.abc.Messageable 
         return True
     except discord.Forbidden:
         # no permissions to delete
-        await send_handle.send(config.NO_PERMISSIONS, delete_after=config.MESSAGE_TIMER)
+        # await send_handle.send(config.NO_PERMISSIONS, delete_after=config.MESSAGE_TIMER)
+        pass
     except discord.NotFound:
         pass  # message already deleted
     except discord.HTTPException:
