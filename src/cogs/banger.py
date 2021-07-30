@@ -14,7 +14,14 @@ def setup(bot: commands.Bot):
 class Banger(commands.Cog, name="Meme Generator"):
     def __init__(self, bot):
         self.bot = bot
-        for name, image_path in [('awesome', config.AWESOME), ('mad', config.MAD), ('banger', config.BANGER), ('nerd', config.NERD)]:
+        self.bindings = [
+            ('hush', config.HUSH), 
+            ('awesome', config.AWESOME), 
+            ('mad', config.MAD), 
+            ('banger', config.BANGER), 
+            ('nerd', config.NERD)
+        ]
+        for name, image_path in self.bindings:
             self.add_binding(name, image_path)
 
     def add_binding(self, name: str, image: Path):
