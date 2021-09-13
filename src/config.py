@@ -23,6 +23,7 @@ MAD = MEDIA_PATH / 'mad.png'
 NERD = MEDIA_PATH / 'nerd.png'
 SINGLE = MEDIA_PATH / 'single.png'
 CAMEL = MEDIA_PATH / 'camel.png'
+ASS = MEDIA_PATH / 'ass.png'
 
 AMOGUS = MEDIA_PATH / 'amogus.mp3'
 YEAH = MEDIA_PATH / 'yeah.mp3'

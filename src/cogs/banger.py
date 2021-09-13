@@ -19,7 +19,8 @@ class Banger(commands.Cog, name="Meme Generator"):
             ('awesome', config.AWESOME), 
             ('mad', config.MAD), 
             ('banger', config.BANGER), 
-            ('nerd', config.NERD)
+            ('nerd', config.NERD),
+            ('ass', config.ASS)
         ]
         for name, image_path in self.bindings:
             self.add_binding(name, image_path)
