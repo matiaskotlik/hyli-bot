@@ -23,3 +23,4 @@ To run the bot yourself just set the environment variables `DATABASE_URL` and `B
 - activate it (linux): `source venv/bin/activate`
 - activate it (windows): `venv\Scripts\activate`
 - install python dependencies: `pip install -r requirements.txt`
+- run it: `DATABASE_URL=mongodb://user:pass@host:port BOT_TOKEN=12345 python3 src/main.py`
