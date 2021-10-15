@@ -2,11 +2,19 @@
 
 General purpose discord bot for me and my friends.
 
-- Runs on python3
-- Using discord.py API wrapper to talk to discord
-- pymongo/MongoDB for some bot functions that use a database
-- Pillow for other bot functions that manipulate images
-- ffmpeg for some voice related things
+- Runs on Python 3
+- Using `discord.py` API wrapper to talk to discord
+- `pymongo`/MongoDB is used for some bot functions that use a database
+- The python `Pillow` library is used for other bot functions that manipulate images
+- `ffmpeg` for some voice related things
+
+# Deployment
+
+The bot itself currently lives in a heroku app that clones from github and restarts itself whenever I push to main, so changes are easy to make.
+
+The database is on MongoDB Atlas. Their free plan has a 512MB limit on the database size and I haven't even hit 100KB yet after years of use.
+
+To run the bot yourself just set the environment variables `DATABASE_URL` and `BOT_TOKEN` (or put them in a .env file in the root of the project) and run `python3 src/main.py`
 
 # Usage:
 
