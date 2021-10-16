@@ -47,10 +47,10 @@ if DATABASE_URL is None:
 PREFIX = '!'
 
 # uwu channel
-UWU_PATTERN = re.compile(r'(uwu|owo)', re.IGNORECASE)
+UWU_PATTERN = re.compile(r'^[^a-z]*(uwu|owo)[^a-z]*$', re.IGNORECASE)
 
 # quotes channel
-QUOTES_PATTERN = re.compile(r'^quotes?$', re.IGNORECASE)
+QUOTES_PATTERN = re.compile(r'^[^a-z]*quotes?[^a-z]*$', re.IGNORECASE)
 
 # reactions
 # REACTION_YES = '✅'
