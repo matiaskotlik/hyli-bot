@@ -24,6 +24,7 @@ class SocialCredit(commands.Cog, name="Social Credit"):
         [f'@&{config.LEAGUE_ROLE}', -15],
         ['(winnie the )?pooh', -20],
         ['wuhan', -20],
+        ['(china|chinese) virus', -20]
         ['ti[a@]n[a@]nmen square', -30],
         ['fr[e3][e3] h[o0]ng k[o0]ng', -30],
     ]
