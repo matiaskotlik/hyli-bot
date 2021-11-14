@@ -3,6 +3,7 @@ import datetime
 import functools
 import re
 from io import BytesIO
+from typing import List
 
 import discord
 from discord.ext import commands

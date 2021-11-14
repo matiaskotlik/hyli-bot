@@ -59,7 +59,7 @@ class Horny(commands.Cog, name="Horny Tracker"):
     async def hornystatus(self, ctx: commands.Context, user: discord.Member = None):
         user = user or (await utils.get_implied_message(ctx)).author
         record = self.collection.find_one_and_update(
-            {'user_id': user.id},
+            {'user_id': user.id, 'guild_id': ctx.guild.id},
             {'$setOnInsert': {'count': 0}},
             upsert=True, return_document=ReturnDocument.AFTER)
         await self.show(ctx, user, record['count'])

@@ -60,6 +60,7 @@ if __name__ == '__main__':
     bot.load_extension('cogs.undelete')
     bot.load_extension('cogs.camel')
     bot.load_extension('cogs.coinflip')
+    bot.load_extension('cogs.socialcredit')
 
     @bot.command(brief="Load a module", hidden=True)
     @commands.is_owner()
