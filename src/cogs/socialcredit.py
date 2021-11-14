@@ -13,8 +13,8 @@ def setup(bot: commands.Bot):
 
 class SocialCredit(commands.Cog, name="Social Credit"):
     PATTERNS = [
-        ['glory (to|for) (the)? (ccp|chinese|china|communism)', 10],
-        ['(all)? praise (to)? xi jinping', 10],
+        ['glory (to|for )(the )?(ccp|chinese|china|communism)', 10],
+        ['(all )?praise (to )?xi jinping', 10],
         ['i love china', 10],
         ['china num(ber|bah|) (one|1|)', 10],
         ['comrade', 5],
@@ -24,6 +24,7 @@ class SocialCredit(commands.Cog, name="Social Credit"):
         ['(winnie the)? pooh', -20],
         ['wuhan', -20],
         ['tiananmen square', -30],
+        ['free hong kong', -30],
     ]
     
     GOOD = 'Good work comrade! +{} social credit score!'
