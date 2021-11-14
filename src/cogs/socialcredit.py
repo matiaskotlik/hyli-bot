@@ -24,8 +24,8 @@ class SocialCredit(commands.Cog, name="Social Credit"):
         [f'@&{config.LEAGUE_ROLE}', -15],
         ['(winnie the)? pooh', -20],
         ['wuhan', -20],
-        ['tiananmen square', -30],
-        ['free hong kong', -30],
+        ['ti[a@]n[a@]nmen square', -30],
+        ['fr[e3][e3] h[o0]ng k[o0]ng', -30],
     ]
     
     GOOD = 'Good work comrade! +{} social credit score!'
