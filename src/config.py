@@ -43,6 +43,26 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL is None:
     raise ValueError('Need a DATABASE_URL')
 
+TWITTER_API_KEY = os.getenv('TWITTER_API_KEY')
+if TWITTER_API_KEY is None:
+    raise ValueError('Need a TWITTER_API_KEY')
+
+TWITTER_API_KEY_SECRET = os.getenv('TWITTER_API_KEY_SECRET')
+if TWITTER_API_KEY_SECRET is None:
+    raise ValueError('Need a TWITTER_API_KEY_SECRET')
+
+TWITTER_BEARER_TOKEN = os.getenv('TWITTER_BEARER_TOKEN')
+if TWITTER_BEARER_TOKEN is None:
+    raise ValueError('Need a TWITTER_BEARER_TOKEN')
+
+TWITTER_ACCESS_TOKEN = os.getenv('TWITTER_ACCESS_TOKEN')
+if TWITTER_ACCESS_TOKEN is None:
+    raise ValueError('Need a TWITTER_ACCESS_TOKEN')
+
+TWITTER_ACCESS_TOKEN_SECRET = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+if TWITTER_ACCESS_TOKEN_SECRET is None:
+    raise ValueError('Need a TWITTER_ACCESS_TOKEN_SECRET')
+
 # discord command prefix
 PREFIX = '!'
 

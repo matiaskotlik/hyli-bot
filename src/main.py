@@ -10,6 +10,7 @@ from discord.ext import commands
 import config
 import help
 import database
+import twitter
 
 
 class Bot(commands.Bot):
@@ -18,6 +19,7 @@ class Bot(commands.Bot):
         self.session = self.loop.run_until_complete(self.create_session())
         self.client = database.get_client_connection()
         self.database = self.client.get_default_database()
+        self.twitter = twitter.get_twitter_connection()
 
     async def process_commands(self, message: discord.Message):
         if message.author.bot:
@@ -61,6 +63,7 @@ if __name__ == '__main__':
     bot.load_extension('cogs.camel')
     bot.load_extension('cogs.coinflip')
     bot.load_extension('cogs.socialcredit')
+    bot.load_extension('cogs.simp')
 
     @bot.command(brief="Load a module", hidden=True)
     @commands.is_owner()
