@@ -71,7 +71,6 @@ class Simp(commands.Cog, name="Simp"):
             
         tweet_url = f'http://twitter.com/simp/status/{tweet.id_str}'
         for channel in self.channels:
-            print('sending')
             await channel.send(tweet_url)
 
 class ForwardingStream(tweepy.asynchronous.AsyncStream):
