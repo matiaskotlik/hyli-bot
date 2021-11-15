@@ -1,5 +1,7 @@
 import re
 
+from urllib.parse import urlparse
+
 import config
 import discord
 import utils
@@ -17,7 +19,7 @@ class SocialCredit(commands.Cog, name="Social Credit"):
         ['(all )?hail (the )?ccp', 10],
         ['((all )?(praise|hail) (to )?|i love)(xi|xi jinping|mao|mao zhedong)', 10],
         ['i love china', 10],
-        ['china num(ber|bah|) (one|1|)', 10],
+        ['china num(ber|bah|) (one|1)', 10],
         ['comrade', 5],
         ['taiwan', -10],
         ['corona', -10],
@@ -52,19 +54,31 @@ class SocialCredit(commands.Cog, name="Social Credit"):
         if message.author.bot or message.guild == None:
             return
         
-        print(message.content)
-        
+        # check patterns
         for (pattern, score) in self.PATTERNS:
             if re.search(pattern, message.content, re.IGNORECASE):
-                self.collection.find_one_and_update(
-                    {'user_id': message.author.id, 'guild_id': message.guild.id},
-                    {'$inc': {'count': score}},
-                    upsert=True, return_document=ReturnDocument.AFTER)
-                if (score > 0):
-                    await message.reply(self.GOOD.format(score), delete_after=config.MESSAGE_TIMER)
-                else:
-                    await message.reply(self.BAD.format(score), delete_after=config.MESSAGE_TIMER)
+                await self.add_credit(message, score)
                 return
+        
+        # check for gif-posting
+        try:
+            url = urlparse(message.content)
+        except ValueError:
+            pass
+        else:
+            if url and url.hostname == 'tenor.com':
+                await self.add_credit(message, -30)
+                return
+                
+    async def add_credit(self, message: discord.Message, score: int):
+        self.collection.find_one_and_update(
+            {'user_id': message.author.id, 'guild_id': message.guild.id},
+            {'$inc': {'count': score}},
+            upsert=True, return_document=ReturnDocument.AFTER)
+        if (score > 0):
+            await message.reply(self.GOOD.format(score), delete_after=config.MESSAGE_TIMER)
+        else:
+            await message.reply(self.BAD.format(score), delete_after=config.MESSAGE_TIMER)
         
     def format_user_count(self, name: str, count: int):
         plural = 's' if count != 1 else ''
