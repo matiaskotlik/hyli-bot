@@ -6,7 +6,7 @@ import tweepy
 import tweepy.asynchronous
 import utils
 from discord.ext import commands
-
+from discord.ext import tasks
 
 def setup(bot: commands.Bot):
     bot.add_cog(Simp(bot))
@@ -31,9 +31,16 @@ class Simp(commands.Cog, name="Simp"):
         self.stream.filter(follow=self.USERS)
         # self.stream.filter(track=["art"]) # for testing
         self.channels: list[discord.TextChannel] = []
-    
+
+    def cog_unload(self):
+        self.recheck_channels.cancel()
+        
     @commands.Cog.listener()
     async def on_ready(self):
+        self.recheck_channels.start()
+        
+    @tasks.loop(minutes=2)
+    async def recheck_channels(self):
         self.channels = [
             channel 
             for guild in self.bot.guilds 
@@ -55,11 +62,9 @@ class Simp(commands.Cog, name="Simp"):
         
         if self.last_post == tweet.id_str:
             return
-        else:
-            self.last_post = tweet.id_str
         
+        self.last_post = tweet.id_str
         tweet_url = f'http://twitter.com/simp/status/{tweet.id_str}'
-        
         for channel in self.channels:
             await channel.send(tweet_url)
 
