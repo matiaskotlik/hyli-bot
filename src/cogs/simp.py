@@ -55,7 +55,7 @@ class Simp(commands.Cog, name="Simp"):
             return
         
         # no rt's
-        if tweet.is_quote_status:
+        if tweet.is_quote_status or tweet.retweeted_status:
             return
         
         # only if has media
