@@ -1,12 +1,13 @@
 import re
 
 import config
+from collections import deque
 import discord
 import tweepy
 import tweepy.asynchronous
 import utils
-from discord.ext import commands
-from discord.ext import tasks
+from discord.ext import commands, tasks
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Simp(bot))
@@ -20,6 +21,7 @@ class Simp(commands.Cog, name="Simp"):
         785927446310719488, # yoojpls
     ]
     SIMP_PATTERN = re.compile(r'^(|.*[^a-z])simp(ing)?(|[^a-z].*)$', re.IGNORECASE)
+    MAX_SIZE = 200
     def __init__(self, bot):
         self.bot = bot
         self.stream = ForwardingStream(
@@ -27,7 +29,7 @@ class Simp(commands.Cog, name="Simp"):
             config.TWITTER_ACCESS_TOKEN, config.TWITTER_ACCESS_TOKEN_SECRET,
             callback=self.on_twitter_event
         )
-        self.last_post = None
+        self.seen_tweets = deque()
         self.stream.filter(follow=self.USERS)
         # self.stream.filter(track=["art"]) # for testing
         self.channels: list[discord.TextChannel] = []
@@ -60,12 +62,16 @@ class Simp(commands.Cog, name="Simp"):
         if 'media' not in tweet.entities:
             return
         
-        if self.last_post == tweet.id_str:
+        if tweet.id_str in self.seen_tweets:
             return
         
-        self.last_post = tweet.id_str
+        self.seen_tweets.append(tweet.id_str)
+        while len(self.seen_tweets) >= self.MAX_SIZE:
+            self.seen_tweets.popleft()
+            
         tweet_url = f'http://twitter.com/simp/status/{tweet.id_str}'
         for channel in self.channels:
+            print('sending')
             await channel.send(tweet_url)
 
 class ForwardingStream(tweepy.asynchronous.AsyncStream):
