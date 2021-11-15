@@ -27,6 +27,7 @@ class Simp(commands.Cog, name="Simp"):
             config.TWITTER_ACCESS_TOKEN, config.TWITTER_ACCESS_TOKEN_SECRET,
             callback=self.on_twitter_event
         )
+        self.last_post = None
         self.stream.filter(follow=self.USERS)
         # self.stream.filter(track=["art"]) # for testing
         self.channels: list[discord.TextChannel] = []
@@ -51,6 +52,11 @@ class Simp(commands.Cog, name="Simp"):
         # only if has media
         if 'media' not in tweet.entities:
             return
+        
+        if self.last_post == tweet.id_str:
+            return
+        else:
+            self.last_post = tweet.id_str
         
         tweet_url = f'http://twitter.com/simp/status/{tweet.id_str}'
         
