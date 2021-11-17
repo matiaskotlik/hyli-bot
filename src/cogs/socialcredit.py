@@ -84,6 +84,18 @@ class SocialCredit(commands.Cog, name="Social Credit"):
         fields = [(await utils.get_nickname(self.bot, ctx.guild, record['user_id']), record['count'])
                   for record in records]
         await self.send_embed(ctx, "Social Credit Leaderboard", "Best Social Credit", fields)
+        
+    @commands.command(brief="Show enemies of the state")
+    @commands.guild_only()
+    async def worstcredit(self, ctx: commands.Context):
+        records = self.collection \
+            .find({'guild_id': ctx.guild.id}) \
+            .sort([('count', 1)]) \
+            .limit(6)
+
+        fields = [(await utils.get_nickname(self.bot, ctx.guild, record['user_id']), record['count'])
+                  for record in records]
+        await self.send_embed(ctx, "Enemies of the State", "Worst Social Credit", fields)
     
     async def send_embed(self, channel, title: str, desc: str, fields: list[tuple[str, str]]):
         image = "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/flag-china_1f1e8-1f1f3.png"
