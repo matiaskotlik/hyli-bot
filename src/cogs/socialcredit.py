@@ -19,7 +19,7 @@ class SocialCredit(commands.Cog, name="Social Credit"):
         ['(all )?hail (the )?ccp', 10],
         ['((all )?(praise|hail) (to )?|i love)(xi|xi jinping|mao|mao zhedong)', 10],
         ['i love china', 10],
-        ['china num(ber|bah|) (one|1)', 10],
+        ['china num(ber|bah|) (one|1)($|\s)', 10],
         ['comrade', 5],
         ['taiwan', -10],
         ['corona', -10],
