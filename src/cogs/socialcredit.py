@@ -34,6 +34,8 @@ class SocialCredit(commands.Cog, name="Social Credit"):
     GOOD = 'Good work comrade! +{} social credit score!'
     BAD = 'Not acceptable! {} social credit score!'
     
+    BOT_CHANNEL = re.compile('^(|.*[^a-z])(bot)(|[^a-z].*)$', re.IGNORECASE)
+    
     def __init__(self, bot):
         self.bot = bot
         self.collection = bot.database.socialcredit
@@ -53,6 +55,7 @@ class SocialCredit(commands.Cog, name="Social Credit"):
     async def on_nocommand(self, message: discord.Message):
         if message.author.bot or message.guild == None:
             return
+        
         
         # check patterns
         for (pattern, score) in self.PATTERNS:
@@ -75,10 +78,15 @@ class SocialCredit(commands.Cog, name="Social Credit"):
             {'user_id': message.author.id, 'guild_id': message.guild.id},
             {'$inc': {'count': score}},
             upsert=True, return_document=ReturnDocument.AFTER)
+            
         if (score > 0):
             await message.reply(self.GOOD.format(score), delete_after=config.MESSAGE_TIMER)
         else:
             await message.reply(self.BAD.format(score), delete_after=config.MESSAGE_TIMER)
+
+        bot_channel = self.BOT_CHANNEL.match(message.channel.name)
+        if bot_channel:
+            await message.delete()
         
     def format_user_count(self, name: str, count: int):
         plural = 's' if count != 1 else ''
