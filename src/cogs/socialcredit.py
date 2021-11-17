@@ -72,6 +72,27 @@ class SocialCredit(commands.Cog, name="Social Credit"):
             if url and url.hostname == 'tenor.com':
                 await self.add_credit(message, -30)
                 return
+    
+    @commands.command(brief="Show the most loyal citizens")
+    @commands.guild_only()
+    async def topcredit(self, ctx: commands.Context):
+        records = self.collection \
+            .find({'guild_id': ctx.guild.id}) \
+            .sort([('count', -1)]) \
+            .limit(6)
+
+        fields = [(await utils.get_nickname(self.bot, ctx.guild, record['user_id']), record['count'])
+                  for record in records]
+        await self.send_embed(ctx, "Social Credit Leaderboard", "Best Social Credit", fields)
+    
+    async def send_embed(self, channel, title: str, desc: str, fields: list[tuple[str, str]]):
+        image = "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/flag-china_1f1e8-1f1f3.png"
+        embed=discord.Embed(title=title, description=desc, color=0xff0000)
+        embed.set_author(name="People's Republic of China (中华人民共和国)", url="https://www.gov.cn/", icon_url=image)
+        embed.set_thumbnail(url=image)
+        for k, v in fields:
+            embed.add_field(name=k, value=v, inline=True)
+        await channel.send(embed=embed)
                 
     async def add_credit(self, message: discord.Message, score: int):
         self.collection.find_one_and_update(
